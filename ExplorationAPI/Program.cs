@@ -28,7 +28,7 @@ else
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    builder.Configuration.AddAzureKeyVault(new Uri("https://explorationgametesting.vault.azure.net/"), new DefaultAzureCredential());
+    builder.Configuration.AddAzureKeyVault(new Uri("https://explorationkv.vault.azure.net/"), new DefaultAzureCredential());
     azureUri = builder.Configuration["azureUri"];
     azureKey = builder.Configuration["PrimaryKey"];
 }

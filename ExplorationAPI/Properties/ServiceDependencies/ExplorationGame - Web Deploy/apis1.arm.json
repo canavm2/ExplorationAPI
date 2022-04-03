@@ -4,7 +4,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "ExplorationTesting",
+      "defaultValue": "ExplorationRG",
       "metadata": {
         "_parameterType": "resourceGroup",
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
@@ -12,7 +12,7 @@
     },
     "resourceGroupLocation": {
       "type": "string",
-      "defaultValue": "westus",
+      "defaultValue": "centralus",
       "metadata": {
         "_parameterType": "location",
         "description": "Location of the resource group. Resource groups could have different location than resources."
@@ -49,17 +49,17 @@
           "contentVersion": "1.0.0.0",
           "resources": [
             {
-              "name": "ExplorationGameAPI",
+              "name": "ExplorationAPIM",
               "type": "Microsoft.ApiManagement/service",
               "location": "[parameters('resourceLocation')]",
               "properties": {
                 "publisherEmail": "canavm2@gmail.com",
-                "publisherName": "twm",
+                "publisherName": "mikecanavan",
                 "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
                 "hostnameConfigurations": [
                   {
                     "type": "Proxy",
-                    "hostName": "explorationgameapi.azure-api.net",
+                    "hostName": "explorationapim.azure-api.net",
                     "encodedCertificate": null,
                     "keyVaultId": null,
                     "certificatePassword": null,
@@ -69,7 +69,7 @@
                   }
                 ],
                 "publicIPAddresses": [
-                  "13.91.105.239"
+                  "40.89.254.198"
                 ],
                 "privateIPAddresses": null,
                 "additionalLocations": null,
@@ -99,7 +99,7 @@
             },
             {
               "type": "Microsoft.ApiManagement/service/apis",
-              "name": "ExplorationGameAPI/explorationgame",
+              "name": "ExplorationAPIM/explorationgame",
               "properties": {
                 "displayName": "ExplorationGame",
                 "apiRevision": "1",
@@ -122,7 +122,7 @@
               },
               "apiVersion": "2019-12-01",
               "dependsOn": [
-                "ExplorationGameAPI"
+                "ExplorationAPIM"
               ]
             }
           ]
