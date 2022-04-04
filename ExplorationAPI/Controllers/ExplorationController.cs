@@ -1,7 +1,12 @@
+using FileTools;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExplorationAPI.Controllers
 {
+
+
+
+
     [ApiController]
     [Route("[controller]")]
     public class ExplorationController : ControllerBase
@@ -10,6 +15,7 @@ namespace ExplorationAPI.Controllers
         private readonly ILogger<ExplorationController> _logger;
         public ExplorationController(ILogger<ExplorationController> logger) {_logger = logger;}
         #endregion
+
 
         [HttpGet(Name = "Base Get")]
         public string Get(string id)

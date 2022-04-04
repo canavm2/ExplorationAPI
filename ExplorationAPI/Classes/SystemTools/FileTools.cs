@@ -24,78 +24,61 @@ namespace FileTools
         {
             options.WriteIndented = true;
             cosmosClient = new CosmosClient(azureUri, azureKey);
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
         }
         #endregion
 
         #region Dictionaries and Properties
         JsonSerializerOptions options = new JsonSerializerOptions();
-        string databaseId = "testDB";
+        string databaseId = "ExplorationDB";
         CosmosClient cosmosClient;
+        string containerId = "Caches";
+        CosmosContainer container;
         #endregion
 
         #region methods
         public async Task StoreCitizens(CitizenCache citizens)
         {
-            string containerId = "CitizenCache";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CitizenCache> response = await container.UpsertItemAsync<CitizenCache>(citizens);
         }
         public async Task<CitizenCache> ReadCitizens(Guid id)
         {
-            string containerId = "CitizenCache";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CitizenCache> response = await container.ReadItemAsync<CitizenCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (CitizenCache)response;
         }
         public async Task StoreCompanies(CompanyCache playerCompany)
         {
-            string containerId = "PlayerCompanies";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CompanyCache> response = await container.UpsertItemAsync<CompanyCache>(playerCompany);
         }
         public async Task<CompanyCache> ReadCompanies(Guid id)
         {
-            string containerId = "PlayerCompanies";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CompanyCache> response = await container.ReadItemAsync<CompanyCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (CompanyCache)response;
         }
         public async Task StoreRelationshipCache(RelationshipCache relationships)
         {
-            string containerId = "CitizenCache";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<RelationshipCache> response = await container.UpsertItemAsync<RelationshipCache>(relationships);
         }
         public async Task<RelationshipCache> ReadRelationshipCache(Guid id)
         {
-            string containerId = "CitizenCache";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<RelationshipCache> response = await container.ReadItemAsync<RelationshipCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (RelationshipCache)response;
         }
         public async Task StoreLoadTool(LoadTool loadTool)
         {
-            string containerId = "CitizenCache";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<LoadTool> response = await container.UpsertItemAsync<LoadTool>(loadTool);
         }
         public async Task<LoadTool> ReadLoadTool(Guid id)
         {
-            string containerId = "CitizenCache";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<LoadTool> response = await container.ReadItemAsync<LoadTool>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (LoadTool)response;
         }
         public async Task StoreUsers(UserCache userCache)
         {
-            string containerId = "PlayerCompanies";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<UserCache> response = await container.UpsertItemAsync<UserCache>(userCache);
         }
         public async Task<UserCache> ReadUsers(Guid id)
         {
-            string containerId = "PlayerCompanies";
-            CosmosContainer container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<UserCache> response = await container.ReadItemAsync<UserCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (UserCache)response;
         }

@@ -101,11 +101,11 @@
               "type": "Microsoft.ApiManagement/service/apis",
               "name": "ExplorationAPIM/explorationgame",
               "properties": {
-                "displayName": "ExplorationGame",
+                "displayName": "Exploration Game",
                 "apiRevision": "1",
-                "description": "",
+                "description": "This is effectively the client for now.",
                 "subscriptionRequired": true,
-                "serviceUrl": null,
+                "serviceUrl": "https://explorationgame.azurewebsites.net:80/",
                 "path": "",
                 "protocols": [
                   "https"
