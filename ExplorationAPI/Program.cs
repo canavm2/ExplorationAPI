@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using People;
 using Relation;
 using Users;
+using APIMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -24,24 +25,16 @@ builder.Configuration.AddAzureKeyVault(new Uri("https://explorationkv.vault.azur
 string azureUri = builder.Configuration["AzureUri"];
 string azureKey = builder.Configuration["PrimaryKey"];
 
-//string azureUri;
-//string azureKey;
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //azureUri = builder.Configuration["AzureCosmos:URI"];
-    //azureKey = builder.Configuration["AzureCosmos:PrimaryKey"];
 }
 else
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //builder.Configuration.AddAzureKeyVault(new Uri("https://explorationkv.vault.azure.net/"), new DefaultAzureCredential());
-    //azureUri = builder.Configuration["azureUri"];
-    //azureKey = builder.Configuration["PrimaryKey"];
 }
 
 app.UseHttpsRedirection();
@@ -109,5 +102,11 @@ if (NewData)
     await fileTool.StoreUsers(userCache);
 }
 #endregion
+
+app.MapGet("/advancesave", () => APICalls.AdvanceSave(fileTool, citizenCache, userCache, companyCache, relationshipCache));
+app.MapGet("/createuser/{username}", (string username) => APICalls.CreateUser(username, userCache, citizenCache, companyCache));
+app.MapGet("/company/{username}", (string username) => APICalls.StandardInfo(username, userCache, companyCache));
+app.MapGet("/company/{username}/advisor/{role}", (string username, string role) => companyCache.PlayerCompanies[userCache.Users[username].CompanyId].Advisors[role].Describe());
+app.MapGet("/company/{username}/spendtp/{tp}", (string username, double tp) => APICalls.SpendTp(username, tp, userCache, companyCache));
 
 app.Run();

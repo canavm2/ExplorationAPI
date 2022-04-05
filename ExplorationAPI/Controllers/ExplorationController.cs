@@ -13,7 +13,12 @@ namespace ExplorationAPI.Controllers
     {
         #region Logger
         private readonly ILogger<ExplorationController> _logger;
-        public ExplorationController(ILogger<ExplorationController> logger) {_logger = logger;}
+        private readonly FileTool _filetool;
+        public ExplorationController(ILogger<ExplorationController> logger, FileTool filetool)
+        {
+            _logger = logger;
+            _filetool = filetool;
+        }
         #endregion
 
 
