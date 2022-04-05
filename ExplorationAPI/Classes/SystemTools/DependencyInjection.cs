@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Azure.Cosmos;
+using People;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-//using Newtonsoft.Json;
-using FileTools;
 
-namespace People
+namespace DepInj
 {
-    public interface ICitizenCache
+    public interface ICitizenCacheTest
     {
-        Guid id { get; set; }
-        string Name { get; set; }
         List<Citizen> FemaleCitizens { get; set; }
         List<Citizen> MaleCitizens { get; set; }
         List<Citizen> NBCitizens { get; set; }
@@ -21,12 +14,12 @@ namespace People
         Citizen GetRandomCitizen(string gender = "random");
     }
 
-    //Stores the citizens that are not in companies
-    public class CitizenCache : ICitizenCache
+
+    public class CitizenCacheTest : ICitizenCacheTest
     {
         #region Constructors
         //Creates a cache with full lists of every citizen sex
-        public CitizenCache(int size = 0)
+        public CitizenCacheTest(int size = 0)
         {
             Name = "Testing";
             id = Guid.NewGuid();
@@ -46,10 +39,10 @@ namespace People
         }
 
         [JsonConstructor]
-        public CitizenCache(Guid Id, string name, List<Citizen> femalecitizens, List<Citizen> malecitizens, List<Citizen> nbcitizens)
+        public CitizenCacheTest(Guid Id, string name, List<Citizen> femalecitizens, List<Citizen> malecitizens, List<Citizen> nbcitizens)
         {
-            id=Id;
-            Name=name;
+            id = Id;
+            Name = name;
             FemaleCitizens = femalecitizens;
             MaleCitizens = malecitizens;
             NBCitizens = nbcitizens;
@@ -109,3 +102,4 @@ namespace People
         #endregion
     }
 }
+

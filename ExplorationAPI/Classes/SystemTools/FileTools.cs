@@ -25,6 +25,7 @@ namespace FileTools
             options.WriteIndented = true;
             cosmosClient = new CosmosClient(azureUri, azureKey);
             container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
+            
         }
         #endregion
 
@@ -37,9 +38,9 @@ namespace FileTools
         #endregion
 
         #region methods
-        public async Task StoreCitizens(CitizenCache citizens)
+        public async Task StoreCitizens(ICitizenCache citizens)
         {
-            ItemResponse<CitizenCache> response = await container.UpsertItemAsync<CitizenCache>(citizens);
+            ItemResponse<ICitizenCache> response = await container.UpsertItemAsync<ICitizenCache>(citizens);
         }
         public async Task<CitizenCache> ReadCitizens(Guid id)
         {

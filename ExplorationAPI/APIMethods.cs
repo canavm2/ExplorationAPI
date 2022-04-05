@@ -31,7 +31,7 @@ public class APICalls
         }
         else return $"Error: id must be between 0 and {playercompany.Advisors.Count}";
     }
-    public static async Task<string> AdvanceSave(FileTool fileTool, CitizenCache citizenCache, UserCache userCache, CompanyCache companyCache, RelationshipCache relationshipCache)
+    public static async Task<string> AdvanceSave(FileTool fileTool, ICitizenCache citizenCache, UserCache userCache, CompanyCache companyCache, RelationshipCache relationshipCache)
     {
         DateTime currentDateTime = DateTime.Now;
         TimeSpan timeSpan = currentDateTime - userCache.LastSave;
@@ -47,7 +47,7 @@ public class APICalls
         await fileTool.StoreUsers(userCache);
         return "Everything saved!  Beep Beep Woop Woop";
     }
-    public static string CreateUser(string userName, UserCache userCache, CitizenCache citizenCache, CompanyCache companyCache)
+    public static string CreateUser(string userName, UserCache userCache, ICitizenCache citizenCache, CompanyCache companyCache)
     {
         if (userCache.Users.ContainsKey(userName)) return "UserName already Exists, choose something else.";
         userCache.CreateNewUser(userName, citizenCache, companyCache);

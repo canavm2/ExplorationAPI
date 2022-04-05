@@ -35,7 +35,7 @@ namespace Users
         #endregion
 
         #region Methods
-        public void CreateNewUser(string userName, CitizenCache citizenCache, CompanyCache companyCache)
+        public void CreateNewUser(string userName, ICitizenCache citizenCache, CompanyCache companyCache)
         {
             User NewUser =  new User(userName);
             NewUser.CompanyId = companyCache.CreateNewCompany(citizenCache, NewUser);

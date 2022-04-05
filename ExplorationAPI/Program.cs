@@ -9,6 +9,7 @@ using APIMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ICitizenCache, CitizenCache>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>
 {
@@ -50,7 +51,7 @@ LoadTool loadTool = await fileTool.ReadLoadTool(new Guid("fd46a92d-5c61-4afa-b6b
 Boolean NewData = false;
 
 #region Citizen Loading
-CitizenCache citizenCache;
+ICitizenCache citizenCache;
 if (NewData)
 {
     citizenCache = new CitizenCache(100);

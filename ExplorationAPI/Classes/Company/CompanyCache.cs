@@ -32,7 +32,7 @@ namespace Company
         #endregion
 
         #region Methods
-        public Guid CreateNewCompany(CitizenCache citizenCache, User user)
+        public Guid CreateNewCompany(ICitizenCache citizenCache, User user)
         {
             List<Citizen> advisors = new List<Citizen>();
             for (int i = 0; i < 7; i++)

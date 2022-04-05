@@ -17,7 +17,7 @@ namespace Company
     {
         //Initialy building a company
         #region Constructor
-        internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, CitizenCache citizenCache)
+        internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache)
         {
 
             //TODO REWRITE TO PASS ONLY THE CITIZEN CACHE
