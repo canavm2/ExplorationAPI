@@ -1,105 +1,23 @@
-﻿using Azure.Cosmos;
-using People;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using People;
 
-namespace DepInj
+namespace DependencyInjection
 {
-    public interface ICitizenCacheTest
+    public static class ServiceExtensions
     {
-        List<Citizen> FemaleCitizens { get; set; }
-        List<Citizen> MaleCitizens { get; set; }
-        List<Citizen> NBCitizens { get; set; }
-        void CacheCitizen(Citizen citizen);
-        Citizen GetRandomCitizen(string gender = "random");
-    }
-
-
-    public class CitizenCacheTest : ICitizenCacheTest
-    {
-        #region Constructors
-        //Creates a cache with full lists of every citizen sex
-        public CitizenCacheTest(int size = 0)
+        public static void RegisterRepos(this IServiceCollection collection)
         {
-            Name = "Testing";
-            id = Guid.NewGuid();
-            NameList nameList = new();
-            FemaleCitizens = new();
-            MaleCitizens = new();
-            NBCitizens = new();
-            for (int i = 0; i < size; i++)
-            {
-                Citizen femaleCitizen = new(nameList.generateName("female"), "female");
-                FemaleCitizens.Add(femaleCitizen);
-                Citizen maleCitizen = new(nameList.generateName("male"), "male");
-                MaleCitizens.Add(maleCitizen);
-                Citizen nbCitizen = new(nameList.generateName("non-binary"), "non-binary");
-                NBCitizens.Add(nbCitizen);
-            }
+            collection.AddSingleton<ICitizenCache, CitizenCache>();
+            //Add other repositories
         }
 
-        [JsonConstructor]
-        public CitizenCacheTest(Guid Id, string name, List<Citizen> femalecitizens, List<Citizen> malecitizens, List<Citizen> nbcitizens)
+        public static void RegisterLogging(this IServiceCollection collection)
         {
-            id = Id;
-            Name = name;
-            FemaleCitizens = femalecitizens;
-            MaleCitizens = malecitizens;
-            NBCitizens = nbcitizens;
-        }
-        #endregion
-
-        #region Dictionaries and Properties
-        public Guid id { get; set; }
-        public string Name { get; set; }
-        public List<Citizen> FemaleCitizens { get; set; }
-        public List<Citizen> MaleCitizens { get; set; }
-        public List<Citizen> NBCitizens { get; set; }
-        #endregion
-
-        #region Methods
-
-        //Stores a citizen in the appropriate list by sex
-        public void CacheCitizen(Citizen citizen)
-        {
-            if (citizen.Gender == "female") FemaleCitizens.Add(citizen);
-            else if (citizen.Gender == "male") MaleCitizens.Add(citizen);
-            else NBCitizens.Add(citizen);
+            //Register logging
         }
 
-        //Retrieves a random citizen and removes them from the cache to prevent duplication
-        public Citizen GetRandomCitizen(string gender = "random")
+        public static void RegisterAuth(this IServiceCollection collection)
         {
-            Citizen returncitizen;
-            Random random = new Random();
-            int index;
-            if (gender == "random")
-            {
-                string[] genders = new string[] { "female", "male", "non-binary" };
-                index = random.Next(genders.Length);
-                gender = genders[index];
-            }
-            if (gender == "female")
-            {
-                index = random.Next(FemaleCitizens.Count);
-                returncitizen = FemaleCitizens[index];
-                FemaleCitizens.RemoveAt(index);
-            }
-            else if (gender == "male")
-            {
-                index = random.Next(MaleCitizens.Count);
-                returncitizen = MaleCitizens[index];
-                MaleCitizens.RemoveAt(index);
-            }
-            else
-            {
-                index = random.Next(NBCitizens.Count);
-                returncitizen = NBCitizens[index];
-                NBCitizens.RemoveAt(index);
-            }
-            return returncitizen;
+            //Register authentication services.
         }
-        #endregion
     }
 }
-

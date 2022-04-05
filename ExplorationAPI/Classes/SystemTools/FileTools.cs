@@ -38,9 +38,9 @@ namespace FileTools
         #endregion
 
         #region methods
-        public async Task StoreCitizens(ICitizenCache citizens)
+        public async Task StoreCitizens(CitizenCache citizens)
         {
-            ItemResponse<ICitizenCache> response = await container.UpsertItemAsync<ICitizenCache>(citizens);
+            ItemResponse<CitizenCache> response = await container.UpsertItemAsync<CitizenCache>(citizens);
         }
         public async Task<CitizenCache> ReadCitizens(Guid id)
         {

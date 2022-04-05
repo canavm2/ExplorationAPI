@@ -75,6 +75,7 @@ namespace Company
             Relationships = relationships;
             Skills = skills;
             UserId = UserId;
+            Recruits= recruits;
         }
 
 

@@ -41,7 +41,7 @@ public class APICalls
             user.GainTimePoints(interval);
         }
         userCache.LastSave = currentDateTime;
-        await fileTool.StoreCitizens(citizenCache);
+        await fileTool.StoreCitizens((CitizenCache)citizenCache);
         await fileTool.StoreCompanies(companyCache);
         await fileTool.StoreRelationshipCache(relationshipCache);
         await fileTool.StoreUsers(userCache);
