@@ -12,11 +12,75 @@ using System.Net;
 using System.Threading.Tasks;
 using Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Identity;
 
 namespace FileTools
 {
     //An object that gets instatiated, it holds the filepath to the folder everything is saved in.
     //It also holds all the methods used to read/write to the .txt files
+    public static class StartupTools
+    {
+        public static async Task<FileTool> ConstructFileTool()
+        {
+            var client = new SecretClient(new Uri("https://explorationkv.vault.azure.net/"), new DefaultAzureCredential());
+            var azureUriSecret = await client.GetSecretAsync("AzureUri");
+            var azureKeySecret = await client.GetSecretAsync("PrimaryKey");
+            string azureUri = azureUriSecret.Value.Value;
+            string azureKey = azureKeySecret.Value.Value;
+            return new FileTool(azureUri, azureKey);
+        }
+        public static async Task<CitizenCache> ConstructCitizenCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
+        {
+            CitizenCache citizenCache;
+            if (newData)
+            {
+                citizenCache = new CitizenCache(100);
+                Console.WriteLine($"femalecitizens has: {citizenCache.FemaleCitizens.Count} items.\nThe first female is:\n{citizenCache.FemaleCitizens[0].Describe()}");
+                Console.WriteLine($"malecitizens has: {citizenCache.MaleCitizens.Count} items.\nThe first male is:\n{citizenCache.MaleCitizens[0].Describe()}");
+                Console.WriteLine($"nbcitizens has: {citizenCache.NBCitizens.Count} items.\nThe first non-binary is:\n{citizenCache.NBCitizens[0].Describe()}");
+                loadTool.CitizenCacheId = citizenCache.id;
+            }
+            else citizenCache = await fileTool.ReadCitizens(loadTool.CitizenCacheId);
+            return citizenCache;
+        }
+        public static async Task<CompanyCache> ConstructCompanyCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
+        {
+            CompanyCache companyCache;
+            if (newData)
+            {
+                companyCache = new();
+                loadTool.CompanyCacheId = companyCache.id;
+            }
+            else companyCache = await fileTool.ReadCompanies(loadTool.CompanyCacheId);
+            return companyCache;
+        }
+        public static async Task<UserCache> ConstructUserCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
+        {
+            UserCache userCache;
+            if (newData)
+            {
+                userCache = new();
+                loadTool.UserCacheId = userCache.id;
+            }
+            else userCache = await fileTool.ReadUsers(loadTool.UserCacheId);
+            return userCache;
+        }
+        public static async Task<RelationshipCache> ConstructRelationshipCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
+        {
+            RelationshipCache relationshipCache;
+            if (newData)
+            {
+                relationshipCache = new RelationshipCache();
+                loadTool.RelationshipCacheId = relationshipCache.id;
+            }
+            else relationshipCache = await fileTool.ReadRelationshipCache(loadTool.RelationshipCacheId);
+            return relationshipCache;
+        }
+    }
+
+
+
     public class FileTool
     {
         #region Constructor and Lists

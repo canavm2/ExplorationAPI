@@ -10,9 +10,17 @@ using Company;
 
 namespace Relation
 {
+    public interface IRelationshipCache
+    {
+        public Guid id { get; set; }
+        public Dictionary<string, Relationship> OldRelationships { get; set; }
+        public void CacheRelationship(Relationship relationship);
+        public Relationship RetrieveRelationship(string id);
+        public bool ContainsRelationships(string id);
+    }
     //Object that holds the old relationships
     //these are relationships between citizens that are no longer in the same company
-    public class RelationshipCache
+    public class RelationshipCache : IRelationshipCache
     {
         #region constructors
         public RelationshipCache()

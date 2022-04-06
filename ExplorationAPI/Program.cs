@@ -9,38 +9,27 @@ using APIMethods;
 using DependencyInjection;
 using Azure.Security.KeyVault.Secrets;
 
-#region BuildFileTool
-var client = new SecretClient(new Uri("https://explorationkv.vault.azure.net/"), new DefaultAzureCredential());
-var azureUriSecret = await client.GetSecretAsync("AzureUri");
-var azureKeySecret = await client.GetSecretAsync("PrimaryKey");
-string azureUri = azureUriSecret.Value.Value;
-string azureKey = azureKeySecret.Value.Value;
-FileTool fileTool = new FileTool(azureUri, azureKey);
-LoadTool loadTool = await fileTool.ReadLoadTool(new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c"));
-#endregion
-
 Boolean NewData = false;
+Guid LoadToolGuid = new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c");
 
-#region CitizenLoading
-CitizenCache citizenCache;
-if (NewData)
-{
-    citizenCache = new CitizenCache(100);
-    Console.WriteLine($"femalecitizens has: {citizenCache.FemaleCitizens.Count} items.\nThe first female is:\n{citizenCache.FemaleCitizens[0].Describe()}");
-    Console.WriteLine($"malecitizens has: {citizenCache.MaleCitizens.Count} items.\nThe first male is:\n{citizenCache.MaleCitizens[0].Describe()}");
-    Console.WriteLine($"nbcitizens has: {citizenCache.NBCitizens.Count} items.\nThe first non-binary is:\n{citizenCache.NBCitizens[0].Describe()}");
-    loadTool.CitizenCacheId = citizenCache.id;
-}
-else citizenCache = await fileTool.ReadCitizens(loadTool.CitizenCacheId);
-#endregion
+
+FileTool fileTool = await StartupTools.ConstructFileTool();
+LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
+CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
+CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool);
+UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
+RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+var keyVaultEndpoint = new Uri("https://explorationkv.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
 builder.Services.AddControllers();
-builder.Services.AddSingleton<ICitizenCache>(citizenCache);
-//builder.Services.RegisterAuth();
-//builder.Services.RegisterRepos();
-//builder.Services.RegisterLogging();
+builder.Services.RegisterAuth();
+builder.Services.RegisterRepos(citizenCache,companyCache,userCache,relationshipCache);
+builder.Services.RegisterLogging();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>
 {
@@ -72,57 +61,6 @@ else
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-#region dataloading
-//FileTool fileTool = new FileTool(azureUri, azureKey);
-//LoadTool loadTool = await fileTool.ReadLoadTool(new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c"));
-//LoadTool loadTool = new();
-#endregion
-
-//Boolean NewData = false;
-
-#region Citizen Loading
-//ICitizenCache citizenCache;
-//if (NewData)
-//{
-//    citizenCache = new CitizenCache(100);
-//    Console.WriteLine($"femalecitizens has: {citizenCache.FemaleCitizens.Count} items.\nThe first female is:\n{citizenCache.FemaleCitizens[0].Describe()}");
-//    Console.WriteLine($"malecitizens has: {citizenCache.MaleCitizens.Count} items.\nThe first male is:\n{citizenCache.MaleCitizens[0].Describe()}");
-//    Console.WriteLine($"nbcitizens has: {citizenCache.NBCitizens.Count} items.\nThe first non-binary is:\n{citizenCache.NBCitizens[0].Describe()}");
-//    loadTool.CitizenCacheId = citizenCache.id;
-//}
-//else citizenCache = await fileTool.ReadCitizens(loadTool.CitizenCacheId);
-#endregion
-
-#region User Loading
-UserCache userCache;
-if (NewData)
-{
-    userCache = new();
-    loadTool.UserCacheId = userCache.id;
-}
-else userCache = await fileTool.ReadUsers(loadTool.UserCacheId);
-#endregion
-
-#region Company Loading
-CompanyCache companyCache;
-if (NewData)
-{
-    companyCache = new();
-    loadTool.CompanyCacheId = companyCache.id;
-}
-else companyCache = await fileTool.ReadCompanies(loadTool.CompanyCacheId);
-#endregion
-
-#region Relationship Loading
-RelationshipCache relationshipCache;
-if (NewData)
-{
-    relationshipCache = new RelationshipCache();
-    loadTool.RelationshipCacheId = relationshipCache.id;
-}
-else relationshipCache = await fileTool.ReadRelationshipCache(loadTool.RelationshipCacheId);
-#endregion
 
 #region Save Data
 await fileTool.StoreLoadTool(loadTool);

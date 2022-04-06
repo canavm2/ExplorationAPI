@@ -9,7 +9,13 @@ using Users;
 
 namespace Company
 {
-    public class CompanyCache
+    public interface ICompanyCache
+    {
+        public Guid id { get; set; }
+        public Dictionary<Guid, PlayerCompany> PlayerCompanies { get; set; }
+        public Guid CreateNewCompany(ICitizenCache citizenCache, User user);
+    }
+    public class CompanyCache : ICompanyCache
     {
         #region Constructor
         public CompanyCache()
@@ -42,8 +48,6 @@ namespace Company
             this.PlayerCompanies[newCompany.id] = newCompany;
             return newCompany.id;
         }
-        #endregion
-
-
+        #endregion        
     }
 }

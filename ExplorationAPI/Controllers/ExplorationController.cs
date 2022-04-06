@@ -1,4 +1,7 @@
 using People;
+using Company;
+using Users;
+using Relation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExplorationAPI.Controllers
@@ -7,28 +10,40 @@ namespace ExplorationAPI.Controllers
     [Route("[controller]")]
     public class ExplorationController : ControllerBase
     {
-        #region Logger
+        #region DependencyInjection
         private readonly ILogger<ExplorationController> _logger;
         private ICitizenCache _citizenCache;
+        private ICompanyCache _companyCache;
+        private IUserCache _userCache;
+        private IRelationshipCache _relationshipCache;
 
-        public ExplorationController(ILogger<ExplorationController> logger, ICitizenCache citizenCache)
+        public ExplorationController(
+            ILogger<ExplorationController> logger,
+            ICitizenCache citizenCache,
+            ICompanyCache companyCache,
+            IUserCache userCache,
+            IRelationshipCache relationshipCache)
         {
             _logger = logger;
             _citizenCache = citizenCache;
+            _companyCache = companyCache;
+            _userCache = userCache;
+            _relationshipCache = relationshipCache;
         }
         #endregion
 
 
-        [HttpGet(Name = "Base Get")]
+        [HttpGet("citizen", Name = "Citizen Get")]
         public string Get()
         {
             return "There are " + _citizenCache.FemaleCitizens.Count.ToString() + "female citizens";
         }
 
-        [HttpGet("test2", Name = "inner Get")]
-        public string InnerGet()
+        [HttpGet("company/{username}", Name = "Company Get")]
+        public string InnerGet(string username)
         {
-            return "There are " + _citizenCache.MaleCitizens.Count.ToString() + "male citizens";
+            if (_userCache.Users.TryGetValue(username, out User user)) return _companyCache.PlayerCompanies[user.CompanyId].Describe();
+            else return "That company doesn't exist";
         }
     }
 }

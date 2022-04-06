@@ -9,7 +9,15 @@ using Company;
 
 namespace Users
 {
-    public class UserCache
+    public interface IUserCache
+    {
+        public Guid id { get; set; }
+        public Dictionary<string, User> Users { get; set; }
+        public DateTime LastSave { get; set; }
+        public void CreateNewUser(string userName, ICitizenCache citizenCache, CompanyCache companyCache);
+    }
+
+    public class UserCache : IUserCache
     {
         #region Constructors
         public UserCache()

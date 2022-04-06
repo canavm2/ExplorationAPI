@@ -1,12 +1,18 @@
 ﻿using People;
+using Company;
+using Users;
+using Relation;
 
 namespace DependencyInjection
 {
     public static class ServiceExtensions
     {
-        public static void RegisterRepos(this IServiceCollection collection)
+        public static void RegisterRepos(this IServiceCollection collection, CitizenCache citizenCache, CompanyCache companyCache, UserCache userCache, RelationshipCache relationshipCache)
         {
-            collection.AddSingleton<ICitizenCache, CitizenCache>();
+            collection.AddSingleton<ICitizenCache>(citizenCache);
+            collection.AddSingleton<ICompanyCache>(companyCache);
+            collection.AddSingleton<IUserCache>(userCache);
+            collection.AddSingleton<IRelationshipCache>(relationshipCache);
             //Add other repositories
         }
 
