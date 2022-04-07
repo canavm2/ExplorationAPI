@@ -8,6 +8,10 @@ using Users;
 using APIMethods;
 using DependencyInjection;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Swashbuckle.AspNetCore.Filters;
 
 Boolean NewData = false;
 Guid LoadToolGuid = new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c");
@@ -31,14 +35,33 @@ builder.Services.RegisterAuth();
 builder.Services.RegisterRepos(citizenCache,companyCache,userCache,relationshipCache,fileTool);
 builder.Services.RegisterLogging();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setup =>
+builder.Services.AddSwaggerGen(options =>
 {
-    setup.SwaggerDoc("v1", new OpenApiInfo()
+    options.SwaggerDoc("v1", new OpenApiInfo()
     {
         Description = "This is effectively the client for now.",
         Title = "Exploration Game",
         Version = "v1"
     });
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "This will be the standard authorization header using the bearer scheme (\"bearer {token}\"). \n" +
+        "In order to authenticate, in the box below type \"bearer {token}\" and replace {token} with the long string that is returned from the login call.",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(fileTool.LoginKey)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
 });
 
 var app = builder.Build();
@@ -59,6 +82,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

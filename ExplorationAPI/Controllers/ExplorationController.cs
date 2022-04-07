@@ -8,11 +8,13 @@ using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExplorationAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //[Authorize]  this requires authentication on the whole controller
     public class ExplorationController : ControllerBase
     {
         #region DependencyInjection
@@ -58,7 +60,8 @@ namespace ExplorationAPI.Controllers
             var userPass = _userCache.Users[request.UserName].PasswordHash;
             var userSalt = _userCache.Users[request.UserName].PasswordSalt;
             if (!VerifyPassword(request.UserName, request.Password, userPass, userSalt)) return BadRequest("wrong password");
-            else return Ok("my token");
+            string token = CreateToken(_userCache.Users[request.UserName]);
+            return Ok(token);
         }
         private UserDto CreatePasswordHash(UserDto userDto, out byte[] hash, out byte[] salt)
         {
@@ -86,6 +89,7 @@ namespace ExplorationAPI.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, "Player")
             };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_fileTool.LoginKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -119,7 +123,7 @@ namespace ExplorationAPI.Controllers
             return "Everything saved!  Beep Beep Woop Woop";
         }
 
-        [HttpGet("company/{username}", Name = "Company Get")]
+        [HttpGet("company/{username}", Name = "Company Get"), Authorize(Roles = "Player")]  //"Allow Anonymous"  will allow for everyone
         public string InnerGet(string username)
         {
             if (_userCache.Users.TryGetValue(username, out User user)) return _companyCache.PlayerCompanies[user.CompanyId].Describe();
