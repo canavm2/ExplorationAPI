@@ -47,12 +47,12 @@ public class APICalls
         await fileTool.StoreUsers(userCache);
         return "Everything saved!  Beep Beep Woop Woop";
     }
-    public static string CreateUser(string userName, UserCache userCache, ICitizenCache citizenCache, CompanyCache companyCache)
-    {
-        if (userCache.Users.ContainsKey(userName)) return "UserName already Exists, choose something else.";
-        userCache.CreateNewUser(userName, citizenCache, companyCache);
-        return "User Created, use your UserID in the API now.";
-    }
+    //public static string CreateUser(string userName, UserCache userCache, ICitizenCache citizenCache, CompanyCache companyCache)
+    //{
+    //    if (userCache.Users.ContainsKey(userName)) return "UserName already Exists, choose something else.";
+    //    userCache.CreateNewUser(userName, citizenCache, companyCache);
+    //    return "User Created, use your UserID in the API now.";
+    //}
     public static string StandardInfo(string userName, UserCache userCache, CompanyCache companyCache)
     {
         string standardInfo = userCache.Users[userName].Describe();

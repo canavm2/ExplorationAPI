@@ -12,25 +12,31 @@ namespace Users
     public class User
     {
         #region Constructors
-        public User(string userName)
+        public User(string username, byte[] hash, byte[] salt)
         {
-            UserName = userName;
+            UserName = username;
+            PasswordHash = hash;
+            PasswordSalt = salt;
             id = new Guid();
             TimePoints = TimeSpan.FromDays(2).TotalSeconds;
         }
 
         [JsonConstructor]
-        public User(string userName, Guid Id, Guid companyId, double timePoints)
+        public User(string userName, Guid Id, Guid companyId, double timePoints, byte[] passwordHash, byte[] passwordSalt)
         {
             UserName = userName;
             id = Id;
             CompanyId = companyId;
             TimePoints = timePoints;
+            PasswordHash = passwordHash;
+            PasswordSalt = passwordSalt;
         }
         #endregion
 
         #region Dictionaries and Properties
         public string UserName { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         public Guid id { get; set; }
         public Guid CompanyId { get; set; }
         public double TimePoints { get; set; }
@@ -59,5 +65,10 @@ namespace Users
             else return false;
         }
         #endregion
+    }
+    public class UserDto
+    {
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

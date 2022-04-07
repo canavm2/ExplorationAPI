@@ -26,9 +26,11 @@ namespace FileTools
             var client = new SecretClient(new Uri("https://explorationkv.vault.azure.net/"), new DefaultAzureCredential());
             var azureUriSecret = await client.GetSecretAsync("AzureUri");
             var azureKeySecret = await client.GetSecretAsync("PrimaryKey");
+            var LoginKey = await client.GetSecretAsync("LoginKey");
             string azureUri = azureUriSecret.Value.Value;
             string azureKey = azureKeySecret.Value.Value;
-            return new FileTool(azureUri, azureKey);
+            string loginKey = LoginKey.Value.Value;
+            return new FileTool(azureUri, azureKey, loginKey);
         }
         public static async Task<CitizenCache> ConstructCitizenCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
         {
@@ -80,25 +82,47 @@ namespace FileTools
     }
 
 
-
-    public class FileTool
+    public interface IFileTool
+    {
+        JsonSerializerOptions options { get; set; }
+        string databaseId { get; set; }
+        CosmosClient cosmosClient { get; set; }
+        string containerId { get; set; }
+        CosmosContainer container { get; set; }
+        string LoginKey { get; set; }
+        public Task StoreCitizens(CitizenCache citizens);
+        public Task<CitizenCache> ReadCitizens(Guid id);
+        public Task StoreCompanies(CompanyCache playerCompany);
+        public Task<CompanyCache> ReadCompanies(Guid id);
+        public Task StoreRelationshipCache(RelationshipCache relationships);
+        public Task<RelationshipCache> ReadRelationshipCache(Guid id);
+        public Task StoreLoadTool(LoadTool loadTool);
+        public Task<LoadTool> ReadLoadTool(Guid id);
+        public Task StoreUsers(UserCache userCache);
+        public Task<UserCache> ReadUsers(Guid id);
+    }
+    public class FileTool : IFileTool
     {
         #region Constructor and Lists
-        public FileTool(string azureUri, string azureKey)
+        public FileTool(string azureUri, string azureKey, string loginKey)
         {
+            databaseId = "ExplorationDB";
+            containerId = "Caches";
+            options = new JsonSerializerOptions();
             options.WriteIndented = true;
             cosmosClient = new CosmosClient(azureUri, azureKey);
             container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
-            
+            LoginKey = loginKey;
         }
         #endregion
 
         #region Dictionaries and Properties
-        JsonSerializerOptions options = new JsonSerializerOptions();
-        string databaseId = "ExplorationDB";
-        CosmosClient cosmosClient;
-        string containerId = "Caches";
-        CosmosContainer container;
+        public JsonSerializerOptions options { get; set; }
+        public string databaseId { get; set; }
+        public CosmosClient cosmosClient { get; set; }
+        public string containerId { get; set; }
+        public CosmosContainer container { get; set; }
+        public string LoginKey { get; set; }
         #endregion
 
         #region methods

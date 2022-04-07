@@ -28,7 +28,7 @@ builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredent
 
 builder.Services.AddControllers();
 builder.Services.RegisterAuth();
-builder.Services.RegisterRepos(citizenCache,companyCache,userCache,relationshipCache);
+builder.Services.RegisterRepos(citizenCache,companyCache,userCache,relationshipCache,fileTool);
 builder.Services.RegisterLogging();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>
@@ -74,7 +74,7 @@ if (NewData)
 #endregion
 
 app.MapGet("/advancesave", () => APICalls.AdvanceSave(fileTool, citizenCache, userCache, companyCache, relationshipCache));
-app.MapGet("/createuser/{username}", (string username) => APICalls.CreateUser(username, userCache, citizenCache, companyCache));
+//app.MapGet("/createuser/{username}", (string username) => APICalls.CreateUser(username, userCache, citizenCache, companyCache));
 app.MapGet("/company/{username}", (string username) => APICalls.StandardInfo(username, userCache, companyCache));
 app.MapGet("/company/{username}/advisor/{role}", (string username, string role) => companyCache.PlayerCompanies[userCache.Users[username].CompanyId].Advisors[role].Describe());
 app.MapGet("/company/{username}/spendtp/{tp}", (string username, double tp) => APICalls.SpendTp(username, tp, userCache, companyCache));

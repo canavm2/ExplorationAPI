@@ -14,7 +14,8 @@ namespace Users
         public Guid id { get; set; }
         public Dictionary<string, User> Users { get; set; }
         public DateTime LastSave { get; set; }
-        public void CreateNewUser(string userName, ICitizenCache citizenCache, CompanyCache companyCache);
+        public bool CheckforUser(string userName);
+        public void CreateNewUser(string username, byte[] hash, byte[] salt, CitizenCache citizenCache, CompanyCache companyCache);
     }
 
     public class UserCache : IUserCache
@@ -43,11 +44,17 @@ namespace Users
         #endregion
 
         #region Methods
-        public void CreateNewUser(string userName, ICitizenCache citizenCache, CompanyCache companyCache)
+        public bool CheckforUser(string userName)
         {
-            User NewUser =  new User(userName);
+            if (Users.ContainsKey(userName)) return true;
+            else return false;
+        }
+        public void CreateNewUser(string username, byte[] hash, byte[] salt , CitizenCache citizenCache, CompanyCache companyCache)
+        {
+            if (CheckforUser(username)) throw new Exception("error, user already exists");
+            User NewUser =  new User(username, hash, salt);
             NewUser.CompanyId = companyCache.CreateNewCompany(citizenCache, NewUser);
-            this.Users[userName] = NewUser;
+            this.Users[username] = NewUser;
         }
 
         #endregion
