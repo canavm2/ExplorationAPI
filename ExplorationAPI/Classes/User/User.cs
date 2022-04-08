@@ -19,10 +19,11 @@ namespace Users
             PasswordSalt = salt;
             id = new Guid();
             TimePoints = TimeSpan.FromDays(2).TotalSeconds;
+            Admin = false;
         }
 
         [JsonConstructor]
-        public User(string userName, Guid Id, Guid companyId, double timePoints, byte[] passwordHash, byte[] passwordSalt)
+        public User(string userName, Guid Id, Guid companyId, double timePoints, byte[] passwordHash, byte[] passwordSalt, bool admin)
         {
             UserName = userName;
             id = Id;
@@ -30,6 +31,7 @@ namespace Users
             TimePoints = timePoints;
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
+            Admin = admin;
         }
         #endregion
 
@@ -40,6 +42,7 @@ namespace Users
         public Guid id { get; set; }
         public Guid CompanyId { get; set; }
         public double TimePoints { get; set; }
+        public bool Admin { get; set; }
         #endregion
 
         #region Methods
@@ -66,9 +69,5 @@ namespace Users
         }
         #endregion
     }
-    public class UserDto
-    {
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
+    
 }

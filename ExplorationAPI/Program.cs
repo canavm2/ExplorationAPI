@@ -1,10 +1,10 @@
+global using Company;
+global using People;
+global using Relation;
+global using Users;
+global using FileTools;
 using Azure.Identity;
-using Company;
-using FileTools;
 using Microsoft.OpenApi.Models;
-using People;
-using Relation;
-using Users;
 using APIMethods;
 using DependencyInjection;
 using Azure.Security.KeyVault.Secrets;
@@ -14,26 +14,37 @@ using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 
 Boolean NewData = false;
+
+#region DataSetup
 Guid LoadToolGuid = new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c");
-
-
 FileTool fileTool = await StartupTools.ConstructFileTool();
 LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
 CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
 CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool);
 UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
 RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
-
+var keyVaultEndpoint = new Uri("https://explorationkv.vault.azure.net/");
+await fileTool.StoreLoadTool(loadTool);
+if (NewData)
+{
+    await fileTool.StoreCitizens((CitizenCache)citizenCache);
+    await fileTool.StoreCompanies(companyCache);
+    await fileTool.StoreRelationshipCache(relationshipCache);
+    await fileTool.StoreUsers(userCache);
+}
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
-var keyVaultEndpoint = new Uri("https://explorationkv.vault.azure.net/");
+#region ConfigureBuilder
 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-
 builder.Services.AddControllers();
+builder.Services.AddControllers();
+//Next Three lines pull from DependencyInjection.cs
 builder.Services.RegisterAuth();
 builder.Services.RegisterRepos(citizenCache,companyCache,userCache,relationshipCache,fileTool);
 builder.Services.RegisterLogging();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -43,6 +54,7 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Exploration Game",
         Version = "v1"
     });
+    //This creates the authenticate box in swagger
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Description = "This will be the standard authorization header using the bearer scheme (\"bearer {token}\"). \n" +
@@ -53,6 +65,7 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+//Part of the Token setup https://www.youtube.com/watch?v=v7q3pEK1EA0
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -63,12 +76,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = false
     };
 });
+#endregion
 
 var app = builder.Build();
-//builder.Configuration.AddAzureKeyVault(new Uri("https://explorationkv.vault.azure.net/"), new DefaultAzureCredential());
-//azureUri = builder.Configuration["AzureUri"];
-//azureKey = builder.Configuration["PrimaryKey"];
 
+#region AppBuilding
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -85,22 +97,14 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
-#region Save Data
-await fileTool.StoreLoadTool(loadTool);
-if (NewData)
-{
-    await fileTool.StoreCitizens((CitizenCache)citizenCache);
-    await fileTool.StoreCompanies(companyCache);
-    await fileTool.StoreRelationshipCache(relationshipCache);
-    await fileTool.StoreUsers(userCache);
-}
 #endregion
 
-app.MapGet("/advancesave", () => APICalls.AdvanceSave(fileTool, citizenCache, userCache, companyCache, relationshipCache));
+#region MinimalAPI
+//app.MapGet("/advancesave", () => APICalls.AdvanceSave(fileTool, citizenCache, userCache, companyCache, relationshipCache));
 //app.MapGet("/createuser/{username}", (string username) => APICalls.CreateUser(username, userCache, citizenCache, companyCache));
-app.MapGet("/company/{username}", (string username) => APICalls.StandardInfo(username, userCache, companyCache));
-app.MapGet("/company/{username}/advisor/{role}", (string username, string role) => companyCache.PlayerCompanies[userCache.Users[username].CompanyId].Advisors[role].Describe());
-app.MapGet("/company/{username}/spendtp/{tp}", (string username, double tp) => APICalls.SpendTp(username, tp, userCache, companyCache));
+//app.MapGet("/company/{username}", (string username) => APICalls.StandardInfo(username, userCache, companyCache));
+//app.MapGet("/company/{username}/advisor/{role}", (string username, string role) => companyCache.PlayerCompanies[userCache.Users[username].CompanyId].Advisors[role].Describe());
+//app.MapGet("/company/{username}/spendtp/{tp}", (string username, double tp) => APICalls.SpendTp(username, tp, userCache, companyCache));
+#endregion
 
 app.Run();

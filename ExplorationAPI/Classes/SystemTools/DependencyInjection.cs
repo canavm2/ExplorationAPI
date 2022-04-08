@@ -3,6 +3,8 @@ using Company;
 using Users;
 using Relation;
 using FileTools;
+using ExplorationAPI.Services.UserServices;
+using ExplorationAPI.Services.LoginService;
 
 namespace DependencyInjection
 {
@@ -30,6 +32,9 @@ namespace DependencyInjection
 
         public static void RegisterAuth(this IServiceCollection collection)
         {
+            collection.AddScoped<IUserService, UserService>();
+            collection.AddScoped<ILoginService, LoginService>();
+            collection.AddHttpContextAccessor();
             //Register authentication services.
         }
     }

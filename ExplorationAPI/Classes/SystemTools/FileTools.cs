@@ -27,10 +27,12 @@ namespace FileTools
             var azureUriSecret = await client.GetSecretAsync("AzureUri");
             var azureKeySecret = await client.GetSecretAsync("PrimaryKey");
             var LoginKey = await client.GetSecretAsync("LoginKey");
+            var AdminCheck = await client.GetSecretAsync("AdminCheck");
             string azureUri = azureUriSecret.Value.Value;
             string azureKey = azureKeySecret.Value.Value;
             string loginKey = LoginKey.Value.Value;
-            return new FileTool(azureUri, azureKey, loginKey);
+            string adminCheck = AdminCheck.Value.Value;
+            return new FileTool(azureUri, azureKey, loginKey, adminCheck);
         }
         public static async Task<CitizenCache> ConstructCitizenCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
         {
@@ -90,6 +92,7 @@ namespace FileTools
         string containerId { get; set; }
         CosmosContainer container { get; set; }
         string LoginKey { get; set; }
+        string AdminCheck { get; set; }
         public Task StoreCitizens(CitizenCache citizens);
         public Task<CitizenCache> ReadCitizens(Guid id);
         public Task StoreCompanies(CompanyCache playerCompany);
@@ -104,7 +107,7 @@ namespace FileTools
     public class FileTool : IFileTool
     {
         #region Constructor and Lists
-        public FileTool(string azureUri, string azureKey, string loginKey)
+        public FileTool(string azureUri, string azureKey, string loginKey, string adminCheck)
         {
             databaseId = "ExplorationDB";
             containerId = "Caches";
@@ -113,6 +116,7 @@ namespace FileTools
             cosmosClient = new CosmosClient(azureUri, azureKey);
             container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             LoginKey = loginKey;
+            AdminCheck = adminCheck;
         }
         #endregion
 
@@ -123,6 +127,7 @@ namespace FileTools
         public string containerId { get; set; }
         public CosmosContainer container { get; set; }
         public string LoginKey { get; set; }
+        public string AdminCheck { get; set; }
         #endregion
 
         #region methods
