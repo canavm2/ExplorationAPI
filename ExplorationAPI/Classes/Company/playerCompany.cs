@@ -19,10 +19,6 @@ namespace Company
         #region Constructor
         internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache)
         {
-
-            //TODO REWRITE TO PASS ONLY THE CITIZEN CACHE
-            
-
             Relationships = new();
             if (advisors.Count != 7)
                 throw new ArgumentException($"There are {advisors.Count} advisors in the list, there must be 7.");
@@ -92,8 +88,7 @@ namespace Company
         public DateTime LastRecruitRecycle { get; set; }
         #endregion
 
-        #region Subclasses
-        #endregion
+        
 
     }
 }
