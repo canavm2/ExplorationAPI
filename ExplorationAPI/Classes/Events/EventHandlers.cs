@@ -4,8 +4,10 @@
     {
         //TODO Working HERE
         #region Dictionaries and Properties
-        bool InEvent { get; set; } = false;
-        string CurrentActionID { get; set; } = string.Empty;
+        public bool InEvent { get; set; } = false;
+        public string CurrentActionID { get; set; } = string.Empty;
+
+        public EventResult EventResult { get; set; } = new EventResult();
         public void SetEvent(string actionID)
         {
             InEvent = true;

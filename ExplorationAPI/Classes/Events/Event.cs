@@ -39,9 +39,10 @@
                 option = new EventOption();
                 option.AdvisorId = citizen.id;
                 option.AdvisorName = citizen.Name;
-                option.Text = citizen.Name + "wants to eat the berries.  I'll let them.";
+                option.Text = citizen.Name + " wants to eat the berries.  I'll let them.";
                 OutgoingResult.Options.Add(option);
             }
+            company.Status.EventResult = OutgoingResult;
             return OutgoingResult;
         }
 

@@ -18,14 +18,13 @@ namespace Company
         {
             Random random = new Random();   
             List<Citizen> list = new List<Citizen>();
-            Dictionary<string, Citizen> Advisors = this.Advisors;
-            while (number > 0)
+            foreach (Citizen citizen in this.Advisors.Values)
             {
-                int advisor = random.Next(Advisors.Count);
-                list.Add(Advisors.ElementAt(advisor).Value);
-                Advisors.Remove(Advisors.ElementAt(advisor).Key);
-                number--;
+                list.Add(citizen);
             }
+            // Randomizes the list
+            list.OrderBy(x => random.Next()).ToList();
+            list = list.GetRange(0, number);
             return list;
         }
     }

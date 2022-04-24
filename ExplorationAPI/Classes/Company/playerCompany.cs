@@ -89,7 +89,7 @@ namespace Company
         public Skills Skills { get; set; }
         public Dictionary<string, Citizen> Recruits { get; set; }
         public DateTime LastRecruitRecycle { get; set; }
-        public Status Status { get; set; }
+        public Status Status { get; set; } = new();
         #endregion
 
         
