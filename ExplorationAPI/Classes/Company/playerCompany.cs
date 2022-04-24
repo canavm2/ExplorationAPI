@@ -27,6 +27,7 @@ namespace Company
             UserId = user.id;
             Advisors = new();
             Recruits = new();
+            Status = new();
             LastRecruitRecycle = DateTime.Now;
             AddAdvisor(master, "master");
             //Sets the first 5 citizens in advisors to the other advisors
@@ -63,7 +64,8 @@ namespace Company
             Skills skills,
             Guid userId,
             Dictionary<string, Citizen> recruits,
-            DateTime lastRecruitRecycle)
+            DateTime lastRecruitRecycle,
+            Status status)
         {
             Name = name;
             id = Id;
@@ -72,6 +74,7 @@ namespace Company
             Skills = skills;
             UserId = UserId;
             Recruits= recruits;
+            Status = status;
         }
 
 
@@ -86,6 +89,7 @@ namespace Company
         public Skills Skills { get; set; }
         public Dictionary<string, Citizen> Recruits { get; set; }
         public DateTime LastRecruitRecycle { get; set; }
+        public Status Status { get; set; }
         #endregion
 
         
