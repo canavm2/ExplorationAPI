@@ -20,20 +20,22 @@ User user = userCache.Users["mikecanavan"];
 PlayerCompany company = companyCache.PlayerCompanies[user.CompanyId];
 Console.WriteLine(company.Name);
 
-company.Status = new();
+company.EventStatus = new();
 
 Console.WriteLine("here");
-Console.WriteLine(company.Status.InEvent);
+Console.WriteLine(company.EventStatus.InEvent);
 
-company.Status.EventResult.NextStage = Event.TestEventStageOne;
+company.EventStatus.NextStage = Event.TestEventStageOne;
 
 
-EventResult er = EventOperators.RunStage(company);
+EventStatus er = EventOperators.RunStage(company);
 Console.WriteLine(er.ResultDescription);
 foreach (EventOption option in er.Options)
     Console.WriteLine(option.Text);
 
-company.Status.EventResult.PlayerChoice = 1;
+Console.WriteLine("Starting stage2");
+// TESTING HERE!!!   There is an error
+company.EventStatus.PlayerChoice = 1;
 er = EventOperators.RunStage(company);
 Console.WriteLine(er.ResultDescription);
 

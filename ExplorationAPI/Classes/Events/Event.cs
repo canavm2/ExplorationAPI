@@ -6,11 +6,11 @@
         // Each "stage" has a method that is called and passed a company and the previous stage's result.
         // It returns an event result which is passed back through the API to the players, so they can choose an option.
         // This is the first Stage so doesn't have a result parameter.
-        public static EventResult TestEventStageOne(PlayerCompany company)
+        public static EventStatus TestEventStageOne(PlayerCompany company)
         {
             Random rnd = new Random();
 
-            EventResult OutgoingResult = new();
+            EventStatus OutgoingResult = new();
             OutgoingResult.ResultDescription = "You find berries along the road, they look edible, and by edible I mean, they fit in your mouth.  What do you do?";
             // First Options
             EventOption option = new EventOption();
@@ -33,10 +33,10 @@
         }
 
         // This stage takes the outgoing result from Stage One, with the players choice and returns either another set of choices or ends the event.
-        public static EventResult TestEventStageTwo(PlayerCompany company)
+        public static EventStatus TestEventStageTwo(PlayerCompany company)
         {
-            EventResult IncomingResult = company.Status.EventResult;
-            EventResult OutgoingResult = new();
+            EventStatus IncomingResult = company.EventStatus;
+            EventStatus OutgoingResult = new();
             if (IncomingResult.Options.Count == 0)
             {
                 OutgoingResult.ResultDescription = "No one eats the berries.  Who knows what could have been.";
@@ -53,18 +53,18 @@
 
     public static class EventOperators
     {
-        // This takes a company and an event (which is a function) and applies the event to the company.
+        // This takes a company and applies the next part of their stage.
         // It does all the required alterations to the company's event result so that doesnt need to be done in the events.
-        public static EventResult RunStage(PlayerCompany company)
+        public static EventStatus RunStage(PlayerCompany company)
         {
-            Func<PlayerCompany, EventResult> function = company.Status.EventResult.NextStage;
-            EventResult result = company.Status.EventResult;
-            company.Status.SetEvent(function.ToString());
+            Func<PlayerCompany, EventStatus> function = company.EventStatus.NextStage;
+            EventStatus result = company.EventStatus;
+            company.EventStatus.SetEvent(function.ToString());
             result = function(company);
-            company.Status.EventResult = result;
+            company.EventStatus = result;
             if (result.Options.Count == 0)
             {
-                company.Status.EndEvent();
+                company.EventStatus.EndEvent();
             }
             return result;
         }

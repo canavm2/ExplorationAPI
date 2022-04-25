@@ -1,14 +1,18 @@
 ﻿namespace Events
 {    
-    public class Status
+    public class EventStatus
     {
         #region Dictionaries and Properties
         // Very important to be accurate, if this is true, the company must respond to the current event.
         public bool InEvent { get; set; } = false;
         public string CurrentActionID { get; set; } = string.Empty;
+        public string ResultDescription = string.Empty;
+        public Func<PlayerCompany, EventStatus> NextStage = null;
+        public List<EventOption> Options { get; set; } = new();
+        public bool Complete { get; set; } = false;
+        public int PlayerChoice { get; set; } = 0;
 
         // This need to be instantiated with an empty object for the EventOperators to work.
-        public EventResult EventResult { get; set; } = new EventResult();
         public void SetEvent(string actionID)
         {
             InEvent = true;
@@ -18,19 +22,24 @@
         {
             InEvent = false;
             CurrentActionID = string.Empty;
-            EventResult = new EventResult();
+            ResultDescription = string.Empty;
+            NextStage = null;
+            Options = new();
+            Complete = false;
+            PlayerChoice = 0;
         }
+    }
         #endregion
         
-    }
-    public class EventResult
-    {
-        public string ResultDescription = string.Empty;
-        public Func<PlayerCompany, EventResult> NextStage = null;
-        public List<EventOption> Options { get; set; } = new();
-        public bool Complete { get; set; } = false;
-        public int PlayerChoice { get; set; } = 0;
-    }
+    
+    //public class EventResult
+    //{
+    //    public string ResultDescription = string.Empty;
+    //    public Func<PlayerCompany, EventResult> NextStage = null;
+    //    public List<EventOption> Options { get; set; } = new();
+    //    public bool Complete { get; set; } = false;
+    //    public int PlayerChoice { get; set; } = 0;
+    //}
 
     public class EventOption
     {
