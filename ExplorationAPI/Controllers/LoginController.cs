@@ -10,6 +10,7 @@ namespace ExplorationAPI.Controllers
     [Route("[controller]")]
     public class LoginController : ControllerBase
     {
+        #region Dependency Injection
         private readonly ILogger<ExplorationController> _logger;
         private ICitizenCache _citizenCache;
         private ICompanyCache _companyCache;
@@ -35,6 +36,7 @@ namespace ExplorationAPI.Controllers
             _userService = userService;
             _loginService = loginService;
         }
+        #endregion
 
         UserDto userDto = new UserDto();
 

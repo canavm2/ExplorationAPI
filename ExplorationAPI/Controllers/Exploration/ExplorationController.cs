@@ -48,19 +48,19 @@ namespace ExplorationAPI.Controllers
             _loginService = loginService;
         }
         #endregion
-        [HttpGet("test"), AllowAnonymous]
-        public string test()
-        {
-            return "test";
-        }
-
-
-
-        [HttpGet("company", Name = "Company Get"), Authorize(Roles = "Player")]  //"Allow Anonymous"  will allow for everyone
+        
+        [HttpGet("company", Name = "Company Get")]  //"Allow Anonymous"  will allow for everyone
         public string Company()
         {
             var userName = _userService.GetUserName();
             if (_userCache.Users.TryGetValue(userName, out User user)) return _companyCache.PlayerCompanies[user.CompanyId].Describe();
+            else return "That company doesn't exist";
+        }
+        [HttpPost("walk", Name = "Walk down the Road")]  //"Allow Anonymous"  will allow for everyone
+        public string Walk()
+        {
+            var userName = _userService.GetUserName();
+            if (_userCache.Users.TryGetValue(userName, out User user)) return ExplorationAPIMethods.Walk(_companyCache.PlayerCompanies[user.CompanyId]);
             else return "That company doesn't exist";
         }
     }

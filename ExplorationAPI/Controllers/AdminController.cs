@@ -10,6 +10,7 @@ namespace ExplorationAPI.Controllers
     [Route("admin/[controller]")]
     public class AdminController : ControllerBase
     {
+        #region Dependency Injection
         private readonly ILogger<ExplorationController> _logger;
         private ICitizenCache _citizenCache;
         private ICompanyCache _companyCache;
@@ -38,6 +39,7 @@ namespace ExplorationAPI.Controllers
             _loginService = loginService;
             _relationshipCache = relationshipCache;
         }
+        #endregion
 
         AdminDto adminDto = new AdminDto();
 

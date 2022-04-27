@@ -35,6 +35,7 @@
         // This stage takes the outgoing result from Stage One, with the players choice and returns either another set of choices or ends the event.
         public static EventStatus TestEventStageTwo(PlayerCompany company)
         {
+            Console.WriteLine("running");
             EventStatus IncomingResult = company.EventStatus;
             EventStatus OutgoingResult = new();
             if (IncomingResult.Options.Count == 0)
@@ -55,18 +56,23 @@
     {
         // This takes a company and applies the next part of their stage.
         // It does all the required alterations to the company's event result so that doesnt need to be done in the events.
-        public static EventStatus RunStage(PlayerCompany company)
+        public static string RunStage(PlayerCompany company)
         {
             Func<PlayerCompany, EventStatus> function = company.EventStatus.NextStage;
-            EventStatus result = company.EventStatus;
             company.EventStatus.SetEvent(function.ToString());
-            result = function(company);
-            company.EventStatus = result;
+            EventStatus result = function(company);
+            company.EventStatus = result;   
+            string returnString = result.ResultDescription + "\n\n";
             if (result.Options.Count == 0)
             {
                 company.EventStatus.EndEvent();
             }
-            return result;
+            else
+            {
+                foreach (EventOption option in result.Options)
+                    returnString += option.Text + "\n";
+            }
+            return returnString;
         }
     }
 }

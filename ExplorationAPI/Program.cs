@@ -4,6 +4,7 @@ global using Relation;
 global using Users;
 global using FileTools;
 global using Events;
+global using APIMethods;
 using Azure.Identity;
 using Microsoft.OpenApi.Models;
 using APIMethods;

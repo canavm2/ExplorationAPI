@@ -28,15 +28,11 @@ Console.WriteLine(company.EventStatus.InEvent);
 company.EventStatus.NextStage = Event.TestEventStageOne;
 
 
-EventStatus er = EventOperators.RunStage(company);
-Console.WriteLine(er.ResultDescription);
-foreach (EventOption option in er.Options)
-    Console.WriteLine(option.Text);
+string returnString = EventOperators.RunStage(company);
+Console.WriteLine(returnString);
 
-Console.WriteLine("Starting stage2");
-// TESTING HERE!!!   There is an error
 company.EventStatus.PlayerChoice = 1;
-er = EventOperators.RunStage(company);
-Console.WriteLine(er.ResultDescription);
+returnString = EventOperators.RunStage(company);
+Console.WriteLine(returnString);
 
 Console.WriteLine("Complete");
