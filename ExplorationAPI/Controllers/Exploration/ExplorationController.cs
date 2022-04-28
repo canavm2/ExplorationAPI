@@ -60,7 +60,14 @@ namespace ExplorationAPI.Controllers
         public string Walk()
         {
             var userName = _userService.GetUserName();
-            if (_userCache.Users.TryGetValue(userName, out User user)) return ExplorationAPIMethods.Walk(_companyCache.PlayerCompanies[user.CompanyId]);
+            if (_userCache.Users.TryGetValue(userName, out User user)) return ExplorationAPIMethods.Walk(user, _companyCache.PlayerCompanies[user.CompanyId]);
+            else return "That company doesn't exist";
+        }
+        [HttpPost("progress", Name = "Progress Event")]  //"Allow Anonymous"  will allow for everyone
+        public string ProgressEvent()
+        {
+            var userName = _userService.GetUserName();
+            if (_userCache.Users.TryGetValue(userName, out User user)) return ExplorationAPIMethods.ProgressEvent(_companyCache.PlayerCompanies[user.CompanyId], 1);
             else return "That company doesn't exist";
         }
     }

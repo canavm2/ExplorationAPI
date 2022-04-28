@@ -7,7 +7,7 @@
         public bool InEvent { get; set; } = false;
         public string CurrentActionID { get; set; } = string.Empty;
         public string ResultDescription = string.Empty;
-        public Func<PlayerCompany, EventStatus> NextStage = null;
+        public Action<PlayerCompany> NextStage = null;
         public List<EventOption> Options { get; set; } = new();
         public bool Complete { get; set; } = false;
         public int PlayerChoice { get; set; } = 0;
@@ -22,11 +22,18 @@
         {
             InEvent = false;
             CurrentActionID = string.Empty;
-            ResultDescription = string.Empty;
             NextStage = null;
             Options = new();
             Complete = false;
-            PlayerChoice = 0;
+        }
+        public void FormatResult()
+        {
+            int count = 0;
+            foreach (var option in Options)
+            {
+                ResultDescription += "\n" + count.ToString() + ". " + option.Text;
+                count++;
+            }
         }
     }
         #endregion

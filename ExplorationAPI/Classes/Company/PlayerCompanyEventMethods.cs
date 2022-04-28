@@ -23,7 +23,7 @@ namespace Company
                 list.Add(citizen);
             }
             // Randomizes the list
-            list.OrderBy(x => random.Next()).ToList();
+            list = list.OrderBy(item => random.Next()).ToList();
             list = list.GetRange(0, number);
             return list;
         }
