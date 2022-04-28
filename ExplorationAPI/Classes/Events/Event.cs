@@ -35,7 +35,7 @@
         public static void TestEventStageTwo(PlayerCompany company)
         {
             EventStatus status = company.EventStatus;
-            if (status.Options.Count == 0)
+            if (status.PlayerChoice == 0)
             {
                 status.ResultDescription = "No one eats the berries.  Who knows what could have been.";
 

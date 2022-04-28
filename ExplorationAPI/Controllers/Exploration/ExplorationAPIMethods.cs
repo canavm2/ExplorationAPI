@@ -15,6 +15,8 @@
         {
             company.EventStatus.PlayerChoice = choice;
             if (!company.EventStatus.InEvent) return "You are not in an event, perhaps you should walk down the road.  There might be more berries.";
+            if (company.EventStatus.PlayerChoice < 0 || company.EventStatus.PlayerChoice > company.EventStatus.Options.Count-1)
+                return "Invalid selection, choose an option from the list.\n\n" + company.EventStatus.ResultDescription;
             EventOperators.RunStage(company);
             return company.EventStatus.ResultDescription;
         }

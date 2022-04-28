@@ -28,8 +28,8 @@ user.TimePoints = 1000;
 string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);
 Console.WriteLine(returnString);
 
-company.EventStatus.PlayerChoice = 1;
-returnString = ExplorationAPIMethods.ProgressEvent(company, 1);
+company.EventStatus.PlayerChoice = 4;
+returnString = ExplorationAPIMethods.ProgressEvent(company, company.EventStatus.PlayerChoice);
 Console.WriteLine("\n" + returnString);
 
 Console.WriteLine("\nComplete");

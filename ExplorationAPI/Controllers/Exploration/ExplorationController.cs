@@ -64,10 +64,10 @@ namespace ExplorationAPI.Controllers
             else return "That company doesn't exist";
         }
         [HttpPost("progress", Name = "Progress Event")]  //"Allow Anonymous"  will allow for everyone
-        public string ProgressEvent()
+        public string ProgressEvent(int choice)
         {
             var userName = _userService.GetUserName();
-            if (_userCache.Users.TryGetValue(userName, out User user)) return ExplorationAPIMethods.ProgressEvent(_companyCache.PlayerCompanies[user.CompanyId], 1);
+            if (_userCache.Users.TryGetValue(userName, out User user)) return ExplorationAPIMethods.ProgressEvent(_companyCache.PlayerCompanies[user.CompanyId], choice);
             else return "That company doesn't exist";
         }
     }
