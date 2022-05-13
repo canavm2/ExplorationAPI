@@ -7,7 +7,6 @@
             if (!user.SpendTimePoints(100)) return "You do not have enough Timepoints, you have " + user.TimePoints.ToString() + " timepoints.";
             if (company.EventStatus.InEvent) return "You are currently in an event, please resolve the current event.\n\n" +
                 company.EventStatus.ResultDescription;
-            company.EventStatus.NextStage = Event.TestEventStageOne;
             EventOperators.RunStage(company);
             return company.EventStatus.ResultDescription;
         }

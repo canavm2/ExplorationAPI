@@ -1,8 +1,8 @@
 ﻿namespace Events
 {
-    public static class Event
+    public static partial class Event
     {
-        
+        #region TestStage
         // Each "stage" has a method that is called and passed a company and the previous stage's result.
         // It returns an event result which is passed back through the API to the players, so they can choose an option.
         // This is the first Stage so doesn't have a result parameter.
@@ -47,6 +47,7 @@
             status.Options = new();
             status.NextStage = null;
         }
+        #endregion
     }
 
     public static class EventOperators
