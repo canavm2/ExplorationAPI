@@ -22,15 +22,15 @@ PlayerCompany company = companyCache.PlayerCompanies[user.CompanyId];
 
 company.EventStatus = new();
 
-company.Advisors["master"].Skills.VocSkill["Carpentry"].Full = 21;
-company.Advisors["advisor1"].Skills.VocSkill["Tinker"].Full = 31;
+company.Advisors["master"].Skills["Carpentry"].Full = 21;
+company.Advisors["advisor1"].Skills["Tinker"].Full = 31;
 company.EventStatus.NextStage = Event.BrokenCartOne;
 user.TimePoints = 1000;
 
 string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);
 Console.WriteLine(returnString);
 
-company.EventStatus.PlayerChoice = 2;
+company.EventStatus.PlayerChoice = 0;
 returnString = ExplorationAPIMethods.ProgressEvent(company, company.EventStatus.PlayerChoice);
 Console.WriteLine("\n" + returnString);
 

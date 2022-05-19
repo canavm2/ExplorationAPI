@@ -36,18 +36,18 @@ namespace FileTools
 
                     modifiers.Add(new Modifier(line[j], "trait", type, modifiedvalue, value, description));
                 }
-                Citizen.Trait trait = new Citizen.Trait(line[0],int.Parse(line[1]),modifiers);
+                Trait trait = new Trait(line[0],int.Parse(line[1]),modifiers);
                 Traits[line[0]] = trait;
             }
         }
 
         [JsonConstructor]
-        public TraitList(Dictionary<string, Citizen.Trait> traits)
+        public TraitList(Dictionary<string, Trait> traits)
         {
             Traits = traits;
         }
 
-        public Dictionary<string, Citizen.Trait> Traits { get; set; }
+        public Dictionary<string, Trait> Traits { get; set; }
         string path = @"C:\Users\canav\Documents\ExplorationProject\exploration_classes\csv_files\traits.csv";
     }
 

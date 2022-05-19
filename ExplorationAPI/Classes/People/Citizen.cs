@@ -14,11 +14,12 @@ namespace People
     {
         #region Constructors
         //Builds a random citizen
-        public Citizen(string name, string gender, int age = 0)
+        public Citizen(string name, string gender, string race = "Human", int age = 0)
         {
             Random random = new();
             if (age == 0)
                 age = random.Next(15, 40);
+            Race = new Race(race);
             Name = name;
             Age = age;
             List<string> genders = new() { "male", "female", "non-binary" };
@@ -39,13 +40,34 @@ namespace People
 
             foreach (string pstat in listTool.PrimaryStats)
             {
-                PrimaryStats[pstat] = new(random.Next(10, 30));
+                PrimaryStats[pstat] = new(random.Next(50, 200));
             }
             foreach (string dstat in listTool.DerivedStats)
             {
                 DerivedStats[dstat] = new(0);
             }
             RefreshDerived();
+            #endregion
+
+            #region ConstructSkills
+            Skills = new();
+            int nSkills = listTool.SkillsList.Count;
+            int startSkills = 5;
+            int highskill = 1;
+            foreach (var kvp in listTool.SkillsList)
+            {
+                // This determines if its a starting skill and sets it higher
+                if (random.NextDouble() < (startSkills / nSkills))
+                {
+                    startSkills--;
+                    if (random.NextDouble() < (highskill / startSkills)){
+                        highskill--;
+                        Skills[kvp.Key] = new(random.Next(300,400), kvp.Value[0], kvp.Value[1]);
+                    } else Skills[kvp.Key] = new(random.Next(150, 250), kvp.Value[0], kvp.Value[1]);
+                }
+                Skills[kvp.Key] = new(0, kvp.Value[0], kvp.Value[1]);
+                nSkills--;
+            }
             #endregion
 
             #region ConstructAttributes
@@ -64,8 +86,9 @@ namespace People
         public Citizen(
             string name,
             string gender,
+            Race race,
             Guid Id, int age,
-            Skills skills,
+            Dictionary<string, Skill> skills,
             Dictionary<string, Stat> primarystats,
             Dictionary<string, Stat> derivedstats,
             Dictionary<string, Modifier> modifiers,
@@ -75,6 +98,7 @@ namespace People
         {
             Name = name;
             Gender = gender;
+            Race = race;
             id = Id;
             Age = age;
             Skills = skills;
@@ -92,84 +116,13 @@ namespace People
         public string Name { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
-        public Skills Skills { get; set; }
+        public Dictionary<string, Skill> Skills { get; set; }
+        public Race Race { get; set; }
         public Dictionary<string, Stat> PrimaryStats { get; set; }
         public Dictionary<string, Stat> DerivedStats { get; set; }
         public Dictionary<string, Attribute> Attributes { get; set; }
         public Dictionary<string,Modifier> Modifiers { get; set; }
         public Dictionary<string,Trait> Traits { get; set; }
-        #endregion
-
-        #region Subclasses
-        //Objects to contain Full and Unmodified values of things like skills
-        public class Attribute
-        {
-            #region Constructors
-            public Attribute()
-            {
-                Full = 10;
-                Unmodified = 10;
-            }
-
-            [JsonConstructor]
-            public Attribute(int full, int unmodified)
-            {
-                Full = full;
-                Unmodified = unmodified;
-            }
-            #endregion
-            public int Full { get; set; }
-            public int Unmodified { get; set; }
-        }
-        public class Stat
-        {
-            public Stat(int unmod)
-            {
-                Unmodified = unmod;
-                Full = unmod;
-            }
-
-            [JsonConstructor]
-            public Stat(int unmodified, int full)
-            {
-                Unmodified = unmodified;
-                Full = full;
-            }
-            public int Unmodified { get; set; }
-            public int Full { get; set; }
-        }
-        public class Trait
-        {
-            public Trait(string name, int tier, List<Modifier> modifiers)
-            {
-                Name = name;
-                Tier = tier;
-                Modifiers = modifiers;
-                Known = false;
-            }
-            [JsonConstructor]
-            public Trait(string name, int tier, List<Modifier> modifiers, Boolean known)
-            {
-                Name = name;
-                Tier = tier;
-                Modifiers = modifiers;
-                Known = known;
-            }
-
-            public string Name { get; set; }
-            public  int Tier { get; set; }
-            public Boolean Known { get; set; }
-            public  List<Modifier> Modifiers { get; set; }
-
-            public string Summary()
-            {
-                string returnstring = $"\nTrait: {Name}." +
-                    $"\nModifiers:\n";
-                foreach (Modifier modifier in Modifiers)
-                    returnstring += modifier.Summary();
-                return returnstring;
-            }
-        }
         #endregion
     }
 }

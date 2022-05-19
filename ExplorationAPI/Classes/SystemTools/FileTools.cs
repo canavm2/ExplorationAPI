@@ -226,41 +226,42 @@ namespace FileTools
     public class ListTool
     {
         public ListTool(){}
-        public List<string> VocSkillsList = new()
+        public Dictionary<string, List<string>> SkillsList = new()
         {
-            "Academia",
-            "Athletics",
-            "Animal Handling",
-            "Blacksmithing",
-            "Carpentry",
-            "Cooking",
-            "Diplomacy",
-            "Drill",
-            "Engineering",
-            "First Aid",
-            "History",
-            "Hunting",
-            "Law",
-            "Leadership",
-            "Leatherworking",
-            "Martial",
-            "Medical",
-            "Metalworking",
-            "Pathfinding",
-            "Persuation",
-            "Politics",
-            "Prospecting",
-            "Refining",
-            "Quartermastery",
-            "Skullduggery",
-            "Stealth",
-            "Survival",
-            "Tactics",
-            "Tinker"
+            // TODO FIX THESE, Stats are wrong
+            {"Academia", new List<string>{"INT","WIS"} },
+            {"Athletics", new List<string>{"STR","AGI"} },
+            {"Animal Handling", new List<string>{"CHA","WIS"} },
+            {"Blacksmithing", new List<string>{"STR","INT"} },
+            {"Carpentry", new List<string>{"INT","AGI"} },
+            {"Cooking", new List<string>{"WIS","CHA"} },
+            {"Diplomacy", new List<string>{"LDR","CHA"} },
+            {"Drill", new List<string>{"LDR","AGI"} },
+            {"Engineering", new List<string>{"INT","WIS"} },
+            {"First Aid", new List<string>{"WIS","CHA"} },
+            {"History", new List<string>{"WIS","INT"} },
+            {"Hunting", new List<string>{"AGI","WIS"} },
+            {"Law", new List<string>{"INT","WIS"} },
+            {"Leadership", new List<string>{"LDR","WIS"} },
+            {"Leatherworking", new List<string>{"WIS","AGI"} },
+            {"Martial", new List<string>{"INT","AGI"} },
+            {"Medical", new List<string>{"INT","AGI"} },
+            {"Metalworking", new List<string>{"STR","INT"} },
+            {"Pathfinding", new List<string>{"WIS","INT"} },
+            {"Persuation", new List<string>{"CHA","WIS"} },
+            {"Politics", new List<string>{"LDR","CHA"} },
+            {"Prospecting", new List<string>{"INT","WIS"} },
+            {"Refining", new List<string>{"INT","WIS"} },
+            {"Quartermastery", new List<string>{"INT","WIS"} },
+            {"Skullduggery", new List<string>{"INT","WIS"} },
+            {"Stealth", new List<string>{"INT","WIS"} },
+            {"Survival", new List<string>{"INT","WIS"} },
+            {"Tactics", new List<string>{"INT","WIS"} },
+            {"Tinker", new List<string>{"INT","WIS"} }
         };
 
         public List<string> ExpSkillsList = new() { "exp1", "exp2", "exp3" };
-        public List<string> PrimaryStats = new() { "STR", "DEX", "INT", "WIS", "CHA", "LDR" };
+        public List<string> PrimaryStats = new() { "STR", "AGI", "CON", "INT", "WIS", "PER", "CHA", "LDR", "WIL"};
         public List<string> DerivedStats = new() { "PHYS", "MNTL", "SOCL" };
         public List<string> Attributes = new List<string>() {
                 "Health",

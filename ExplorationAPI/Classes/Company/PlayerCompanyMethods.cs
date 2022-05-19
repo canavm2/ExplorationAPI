@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using People;
 using FileTools;
 using Users;
 //using Newtonsoft.Json;
@@ -46,41 +45,22 @@ namespace Company
         //Ensure all the skills are up to date
         internal void UpdateCompanySkills()
         {
-            foreach (KeyValuePair<string, Skill> kvp in Skills.VocSkill)
+            foreach (KeyValuePair<string, CompanySkill> kvp in Skills)
             {
                 UpdateCompanySkill(kvp.Key, "voc");
-            }
-            foreach (KeyValuePair<string, Skill> kvp in Skills.ExpSkill)
-            {
-                UpdateCompanySkill(kvp.Key, "exp");
             }
         }
         //Update a single skill
         internal void UpdateCompanySkill(string skill, string type)
         {
-            if (type == "voc")
+            List<int> skillvalues = new();
+            foreach (Citizen citizen in Advisors.Values)
             {
-                List<int> skillvalues = new();
-                foreach (Citizen citizen in Advisors.Values)
-                {
-                    skillvalues.Add(citizen.Skills.VocSkill[skill].Full);
-                }
-                skillvalues.Sort();
-                skillvalues.Reverse();
-                Skills.VocSkill[skill] = new((skillvalues[0] + skillvalues[1]) / 2);
+                skillvalues.Add(citizen.Skills[skill].Full);
             }
-            else if (type == "exp")
-            {
-                List<int> skillvalues = new();
-                foreach (Citizen citizen in Advisors.Values)
-                {
-                    skillvalues.Add(citizen.Skills.ExpSkill[skill].Full);
-                }
-                skillvalues.Sort();
-                skillvalues.Reverse();
-                Skills.ExpSkill[skill] = new((skillvalues[0] + skillvalues[1]) / 2);
-            }
-            else throw new Exception($"type must be voc or exp, not: {type}");
+            skillvalues.Sort();
+            skillvalues.Reverse();
+            Skills[skill] = new((skillvalues[0] + skillvalues[1]) / 2);
         }
 
         //Add an advisor to an EMPTY role, rarely used, except initial construction and vacant roles

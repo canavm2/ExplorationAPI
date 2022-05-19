@@ -7,6 +7,10 @@
             if (!user.SpendTimePoints(100)) return "You do not have enough Timepoints, you have " + user.TimePoints.ToString() + " timepoints.";
             if (company.EventStatus.InEvent) return "You are currently in an event, please resolve the current event.\n\n" +
                 company.EventStatus.ResultDescription;
+            Random random = new Random();
+            //TODO make a cache of event and choose one "randomly"
+            if (random.Next(2) == 1) company.EventStatus.NextStage = Event.TestEventStageOne;
+            else company.EventStatus.NextStage = Event.BrokenCartOne;
             EventOperators.RunStage(company);
             return company.EventStatus.ResultDescription;
         }

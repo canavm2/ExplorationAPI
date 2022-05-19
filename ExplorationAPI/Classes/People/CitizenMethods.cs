@@ -13,12 +13,12 @@ namespace People
         //Updates Citizen's Derived stats based on their PrimaryStats
         public void RefreshDerived()
         {
-            DerivedStats["PHYS"].Full = (PrimaryStats["STR"].Full + PrimaryStats["DEX"].Full) / 2;
-            DerivedStats["MNTL"].Full = (PrimaryStats["INT"].Full + PrimaryStats["WIS"].Full) / 2;
-            DerivedStats["SOCL"].Full = (PrimaryStats["CHA"].Full + PrimaryStats["LDR"].Full) / 2;
-            DerivedStats["PHYS"].Unmodified = (PrimaryStats["STR"].Unmodified + PrimaryStats["DEX"].Unmodified) / 2;
-            DerivedStats["MNTL"].Unmodified = (PrimaryStats["INT"].Unmodified + PrimaryStats["WIS"].Unmodified) / 2;
-            DerivedStats["SOCL"].Unmodified = (PrimaryStats["CHA"].Unmodified + PrimaryStats["LDR"].Unmodified) / 2;
+            DerivedStats["PHYS"].Full = (PrimaryStats["STR"].Full + PrimaryStats["DEX"].Full + PrimaryStats["CON"].Full) / 3;
+            DerivedStats["MNTL"].Full = (PrimaryStats["INT"].Full + PrimaryStats["WIS"].Full + PrimaryStats["PER"].Full) / 3;
+            DerivedStats["SOCL"].Full = (PrimaryStats["CHA"].Full + PrimaryStats["LDR"].Full + PrimaryStats["WIL"].Full) / 3;
+            DerivedStats["PHYS"].Unmodified = (PrimaryStats["STR"].Unmodified + PrimaryStats["DEX"].Unmodified + PrimaryStats["CON"].Full) / 3;
+            DerivedStats["MNTL"].Unmodified = (PrimaryStats["INT"].Unmodified + PrimaryStats["WIS"].Unmodified + PrimaryStats["PER"].Full) / 3;
+            DerivedStats["SOCL"].Unmodified = (PrimaryStats["CHA"].Unmodified + PrimaryStats["LDR"].Unmodified + PrimaryStats["WIL"].Full) / 3;
         }
 
         public string Describe()
@@ -28,7 +28,7 @@ namespace People
                 $"\nTheir stats are:\n\n" +
                 DescribeStats() +
                 $"\nTheir skills are:\n\n" +
-                Skills.Describe() +
+                DescribeSkills() +
                 $"\nThis citizen's ID: {id}\n\n";
 
             return returnDescription;
@@ -56,6 +56,12 @@ namespace People
                 derivedDesc;
             ;
             return description;
+        }
+
+        public string DescribeSkills()
+        {
+            string primaryDesc = "";
+            return primaryDesc;
         }
 
         //Adds a temporary modifier to Modifiers(unless already exists) and then applies the modifier
@@ -90,10 +96,8 @@ namespace People
             if (action == "remove") Value = -modifier.Value;
             if (modifier.Type == "skill")
             {
-                if (Skills.VocSkill.ContainsKey(modifier.ModifiedValue))
-                    Skills.VocSkill[modifier.ModifiedValue].Full += Value;
-                else if (Skills.ExpSkill.ContainsKey(modifier.ModifiedValue))
-                    Skills.ExpSkill[modifier.ModifiedValue].Full += Value;
+                if (Skills.ContainsKey(modifier.ModifiedValue))
+                    Skills[modifier.ModifiedValue].Full += Value;
                 else throw new Exception($"Skill Modifier ModifiedValue not found: {modifier.ModifiedValue}");
             }
             else if (modifier.Type == "stat")

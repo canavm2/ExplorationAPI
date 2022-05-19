@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using People;
 using FileTools;
 using Users;
 //using Newtonsoft.Json;
@@ -51,7 +50,7 @@ namespace Company
                 Citizen recruit = citizenCache.GetRandomCitizen();
                 Recruits.Add("recruit" + (i+1).ToString(), recruit);
             }
-            Skills = new("company");
+            Skills = new();
             UpdateCompanySkills();
         }
 
@@ -61,7 +60,7 @@ namespace Company
             Guid Id,
             Dictionary<string,Citizen> advisors,
             Dictionary<string,Relationship> relationships,
-            Skills skills,
+            Dictionary<string, CompanySkill> skills,
             Guid userId,
             Dictionary<string, Citizen> recruits,
             DateTime lastRecruitRecycle,
@@ -86,7 +85,7 @@ namespace Company
         public Guid UserId { get; set; }
         public Dictionary<string, Citizen> Advisors { get; set; }
         public Dictionary<string, Relationship> Relationships { get; set; }
-        public Skills Skills { get; set; }
+        public Dictionary<string, CompanySkill> Skills { get; set; }
         public Dictionary<string, Citizen> Recruits { get; set; }
         public DateTime LastRecruitRecycle { get; set; }
         public EventStatus EventStatus { get; set; } = new();
