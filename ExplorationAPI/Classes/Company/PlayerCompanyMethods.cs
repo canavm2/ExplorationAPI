@@ -37,9 +37,19 @@ namespace Company
                 $"\nThese advisors are on the bench:\n" +
                 benchDescription +
                 $"\nThe company skills are:\n" +
-                Skills.Describe()
+                DescribeCompanySkills()
                 ;
             return companyDescription;
+        }
+
+        public string DescribeCompanySkills()
+        {
+            string primaryDesc = "";
+            foreach (KeyValuePair<string, CompanySkill> skill in Skills)
+            {
+                primaryDesc += "{skill.Key.ToUpper()}: {skill.Value.Full}\n";
+            }
+            return primaryDesc;
         }
 
         //Ensure all the skills are up to date

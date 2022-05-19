@@ -11,16 +11,16 @@ namespace People
             StatModifiers = new();
             if (name == "Southernman")
             {
-                StatModifiers["INT"] = 5;
+                StatModifiers["INT"] = 20;
             }
             else if (name == "Northman")
             {
-                StatModifiers["STR"] = 5;
+                StatModifiers["STR"] = 20;
             }
             else
             {
                 Name = "Human"; //Default in case misspelled.
-                StatModifiers["LDR"] = 5;
+                StatModifiers["LDR"] = 20;
             }
         }
         [JsonConstructor]
@@ -31,7 +31,7 @@ namespace People
         }
         #endregion
 
-        string Name;
-        Dictionary<string, int> StatModifiers;
+        public string Name;
+        public Dictionary<string, int> StatModifiers;
     }
 }

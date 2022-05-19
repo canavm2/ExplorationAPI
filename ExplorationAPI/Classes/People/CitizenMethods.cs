@@ -13,56 +13,11 @@ namespace People
         //Updates Citizen's Derived stats based on their PrimaryStats
         public void RefreshDerived()
         {
-            DerivedStats["PHYS"].Full = (PrimaryStats["STR"].Full + PrimaryStats["DEX"].Full + PrimaryStats["CON"].Full) / 3;
+            DerivedStats["PHYS"].Full = (PrimaryStats["STR"].Full + PrimaryStats["AGI"].Full + PrimaryStats["CON"].Full) / 3;
             DerivedStats["MNTL"].Full = (PrimaryStats["INT"].Full + PrimaryStats["WIS"].Full + PrimaryStats["PER"].Full) / 3;
             DerivedStats["SOCL"].Full = (PrimaryStats["CHA"].Full + PrimaryStats["LDR"].Full + PrimaryStats["WIL"].Full) / 3;
-            DerivedStats["PHYS"].Unmodified = (PrimaryStats["STR"].Unmodified + PrimaryStats["DEX"].Unmodified + PrimaryStats["CON"].Full) / 3;
-            DerivedStats["MNTL"].Unmodified = (PrimaryStats["INT"].Unmodified + PrimaryStats["WIS"].Unmodified + PrimaryStats["PER"].Full) / 3;
-            DerivedStats["SOCL"].Unmodified = (PrimaryStats["CHA"].Unmodified + PrimaryStats["LDR"].Unmodified + PrimaryStats["WIL"].Full) / 3;
         }
 
-        public string Describe()
-        {
-            string returnDescription =
-                $"\n{Name}, a {Age} year old {Gender}.\n" +
-                $"\nTheir stats are:\n\n" +
-                DescribeStats() +
-                $"\nTheir skills are:\n\n" +
-                DescribeSkills() +
-                $"\nThis citizen's ID: {id}\n\n";
-
-            return returnDescription;
-        }
-
-        public string DescribeStats()
-        {
-            //Iterates over all the Primary stats, and provides a string that describes it
-            string primaryDesc = "";
-            foreach (KeyValuePair<string, Stat> stat in PrimaryStats)
-            {
-                string tempDesc = $"{stat.Key.ToUpper()}: {stat.Value.Full.ToString()}\n";
-                primaryDesc += tempDesc;
-            }
-            string derivedDesc = "";
-            foreach (KeyValuePair<string, Stat> stat in DerivedStats)
-            {
-                string tempDesc = $"{stat.Key.ToUpper()}: {stat.Value.Full.ToString()}\n";
-                derivedDesc += tempDesc;
-            }
-            string description =
-                $"Primary Stats:\n" +
-                primaryDesc +
-                $"\nDerived Stats:\n" +
-                derivedDesc;
-            ;
-            return description;
-        }
-
-        public string DescribeSkills()
-        {
-            string primaryDesc = "";
-            return primaryDesc;
-        }
 
         //Adds a temporary modifier to Modifiers(unless already exists) and then applies the modifier
         //Should not be used with trait modifiers, which are stored in the trait

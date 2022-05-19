@@ -40,34 +40,43 @@ namespace People
 
             foreach (string pstat in listTool.PrimaryStats)
             {
-                PrimaryStats[pstat] = new(random.Next(50, 200));
+                int racialModifier = 0;
+                if (Race.StatModifiers.ContainsKey(pstat)) racialModifier = Race.StatModifiers[pstat];
+                PrimaryStats[pstat] = new(random.Next(50, 200), racialModifier);
             }
             foreach (string dstat in listTool.DerivedStats)
             {
                 DerivedStats[dstat] = new(0);
             }
             RefreshDerived();
+            // Gives the company 1 known bit of information.
+            PrimaryStats.ElementAt(random.Next(PrimaryStats.Count)).Value.Known = true;
             #endregion
 
             #region ConstructSkills
             Skills = new();
-            int nSkills = listTool.SkillsList.Count;
-            int startSkills = 5;
-            int highskill = 1;
+            double nSkills = listTool.SkillsList.Count;
+            double startSkills = 5;
+            double highskill = 1;
+            double chance = 0;
             foreach (var kvp in listTool.SkillsList)
             {
                 // This determines if its a starting skill and sets it higher
-                if (random.NextDouble() < (startSkills / nSkills))
+                // This line avoids deividing by zero
+                if (nSkills > 0) chance = startSkills / nSkills; else chance = 1;
+                if (random.NextDouble() < (chance))
                 {
-                    startSkills--;
-                    if (random.NextDouble() < (highskill / startSkills)){
+                    if (startSkills > 0) chance = highskill / startSkills; else chance = 0;
+                    if (random.NextDouble() < (chance))
+                    { 
                         highskill--;
-                        Skills[kvp.Key] = new(random.Next(300,400), kvp.Value[0], kvp.Value[1]);
-                    } else Skills[kvp.Key] = new(random.Next(150, 250), kvp.Value[0], kvp.Value[1]);
-                }
-                Skills[kvp.Key] = new(0, kvp.Value[0], kvp.Value[1]);
+                        Skills[kvp.Key] = new(random.Next(200,300), kvp.Value[0], kvp.Value[1]);
+                    } else Skills[kvp.Key] = new(random.Next(100, 175), kvp.Value[0], kvp.Value[1]);
+                    startSkills--;
+                } else Skills[kvp.Key] = new(0, kvp.Value[0], kvp.Value[1]);
                 nSkills--;
             }
+            CalculateSkills();
             #endregion
 
             #region ConstructAttributes
@@ -90,7 +99,7 @@ namespace People
             Guid Id, int age,
             Dictionary<string, Skill> skills,
             Dictionary<string, Stat> primarystats,
-            Dictionary<string, Stat> derivedstats,
+            Dictionary<string, DerivedStat> derivedstats,
             Dictionary<string, Modifier> modifiers,
             Dictionary<string, Attribute> attributes,
             Dictionary<string, Trait> traits
@@ -119,7 +128,7 @@ namespace People
         public Dictionary<string, Skill> Skills { get; set; }
         public Race Race { get; set; }
         public Dictionary<string, Stat> PrimaryStats { get; set; }
-        public Dictionary<string, Stat> DerivedStats { get; set; }
+        public Dictionary<string, DerivedStat> DerivedStats { get; set; }
         public Dictionary<string, Attribute> Attributes { get; set; }
         public Dictionary<string,Modifier> Modifiers { get; set; }
         public Dictionary<string,Trait> Traits { get; set; }

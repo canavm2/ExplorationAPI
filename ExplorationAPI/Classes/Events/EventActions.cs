@@ -10,9 +10,9 @@
             List<Citizen> returnAdvisors = new List<Citizen>();
             foreach (Citizen advisor in company.Advisors.Values)
             {
-                if (advisor.Skills.VocSkill.ContainsKey(skill))
+                if (advisor.Skills.ContainsKey(skill))
                 {
-                    if (advisor.Skills.VocSkill[skill].Full > value)
+                    if (advisor.Skills[skill].Full > value)
                     {
                         returnAdvisors.Add(advisor);
                     }

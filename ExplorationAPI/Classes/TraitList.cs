@@ -30,7 +30,7 @@ namespace FileTools
                     int value = int.Parse(split[1]);
                     string type = "";
                     if (listTool.PrimaryStats.Contains(modifiedvalue)) type = "stat";
-                    if (listTool.VocSkillsList.Contains(modifiedvalue)) type = "skill";
+                    if (listTool.SkillsList.ContainsKey(modifiedvalue)) type = "skill";
                     if (listTool.Attributes.Contains(modifiedvalue)) type = "attribute";
                     string description = $"{modifiedvalue} {value}";
 

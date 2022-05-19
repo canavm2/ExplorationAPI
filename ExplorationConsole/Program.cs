@@ -6,32 +6,49 @@ global using FileTools;
 global using Events;
 global using APIMethods;
 
-Boolean NewData = false;
+Boolean NewData = true;
+Boolean FromCloud = true;
+Boolean CreateLocal = false;
 
-Guid LoadToolGuid = new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c");
-FileTool fileTool = await StartupTools.ConstructFileTool();
-LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
+#region Cloud
+if (FromCloud)
+{
+    // LOAD from Cloud
+    Guid LoadToolGuid = new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c");
+    FileTool fileTool = await StartupTools.ConstructFileTool();
+    LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
 
-CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
-CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool); 
-UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
-RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
+    CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
+    CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool);
+    UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
+    RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
 
-User user = userCache.Users["string"];
-PlayerCompany company = companyCache.PlayerCompanies[user.CompanyId];
+    // TEST from Cloud
+    User user = userCache.Users["string"];
+    PlayerCompany company = companyCache.PlayerCompanies[user.CompanyId];
 
-company.EventStatus = new();
+    company.EventStatus = new();
 
-company.Advisors["master"].Skills["Carpentry"].Full = 21;
-company.Advisors["advisor1"].Skills["Tinker"].Full = 31;
-company.EventStatus.NextStage = Event.BrokenCartOne;
-user.TimePoints = 1000;
+    company.Advisors["master"].Skills["Carpentry"].Full = 21;
+    company.Advisors["advisor1"].Skills["Tinker"].Full = 31;
+    company.EventStatus.NextStage = Event.BrokenCartOne;
+    user.TimePoints = 1000;
 
-string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);
-Console.WriteLine(returnString);
+    string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);
+    Console.WriteLine(returnString);
 
-company.EventStatus.PlayerChoice = 0;
-returnString = ExplorationAPIMethods.ProgressEvent(company, company.EventStatus.PlayerChoice);
-Console.WriteLine("\n" + returnString);
+    company.EventStatus.PlayerChoice = 0;
+    returnString = ExplorationAPIMethods.ProgressEvent(company, company.EventStatus.PlayerChoice);
+    Console.WriteLine("\n" + returnString);
 
-Console.WriteLine("\nComplete");
+    Console.WriteLine("\nComplete");
+}
+#endregion
+
+#region CreateLocal
+if (CreateLocal)
+{
+    CitizenCache citizenCache = new CitizenCache(1);
+    Console.WriteLine(citizenCache.FemaleCitizens[0].Describe());
+}
+#endregion
