@@ -57,7 +57,7 @@ namespace People
             foreach (var skill in Skills)
             {
                 if (skill.Value.Known || full) primaryDesc += $"{skill.Key.ToUpper()}({skill.Value.pStat},{skill.Value.sStat}): {skill.Value.Full}\n";
-                if (full) primaryDesc += $"     Unmod: {skill.Value.Unmodified}, StatAdj: {skill.Value.StatAdjustment}\n";
+                if (full) primaryDesc += $"     Unmod: {skill.Value.Unmod}, StatAdj: {skill.Value.StatAdjustment}\n";
             }
             return primaryDesc;
         }

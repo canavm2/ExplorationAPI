@@ -1,0 +1,12 @@
+﻿name,tier,modifier1,modifier2,modifier3,modifier4
+Street Urchin,1,Skullduggery.10,Diplomacy.-5,Persuation.5
+Noble Birth,2,Academia.15,History.10,CHA.-5
+Simple,-1,Academia.-10,INT.-10,Happiness.10
+Brute,0,STR.10,CHA.-10,Athletics.10,Stealth.-10
+Lithe,1,DEX.10,STR.-10,Stealth.10
+Soldier,2,Martial.10,Athletics.10
+Woodsmen,2,Hunting.10,Survival.10,Pathfinding.10,LDR.-15
+Permanent Injury,-2,Athletics.-10,DEX.-10
+Head Injury,-2,INT.-10,WIS.-10
+Hale,1,Health.10
+Alpha,1,Motivation.10,LDR.10,CHA.-5

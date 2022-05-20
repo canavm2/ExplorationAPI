@@ -15,7 +15,7 @@ namespace People
         public Skill(int unmod, string pstat, string sstat)
         {
             Full = unmod;
-            Unmodified = unmod;
+            Unmod = unmod;
             pStat = pstat;
             sStat = sstat;
             Known = false;
@@ -23,26 +23,45 @@ namespace People
         }
 
         [JsonConstructor]
-        public Skill(int full, int unmodified, string pstat, string sstat, bool known, int statAdjustment)
+        public Skill(int full, int unmod, string pstat, string sstat, bool known, int statAdjustment)
         {
             Full = full;
-            Unmodified = unmodified;
+            Unmod = unmod;
             pStat = pstat;
             sStat = sstat;
             Known = known;
             StatAdjustment = statAdjustment;
         }
-        public int Full { get; set; }
-        public int Unmodified { get; set; }
+
+
+        private int _full;
+        public int Full {
+            get {return _full; }
+            internal set {_full = value;
+                _full = _unmod + _statAdjustment;
+            }
+        }
+        private int _unmod;
+        public int Unmod{
+            get { return _unmod; }
+            set {_unmod = value;
+                _full = _unmod + _statAdjustment;
+            }
+        }
+        private int _statAdjustment;
+        public int StatAdjustment{
+            get { return _statAdjustment; }
+            internal set { _statAdjustment = value;
+                _full = _unmod + _statAdjustment;
+            }
+        }
         public string pStat { get; }
         public string sStat { get; }
         public bool Known { get; set; }
-        public int StatAdjustment { get; set; }
 
         public void Update(Dictionary<string, Stat> primaryStats)
         {
             StatAdjustment = (primaryStats[pStat].Full / 10) + (primaryStats[sStat].Full / 5);
-            Full = Unmodified + StatAdjustment;
         }
     }
 

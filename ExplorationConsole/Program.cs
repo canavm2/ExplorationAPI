@@ -6,9 +6,9 @@ global using FileTools;
 global using Events;
 global using APIMethods;
 
-Boolean NewData = true;
-Boolean FromCloud = true;
-Boolean CreateLocal = false;
+Boolean NewData = false;
+Boolean FromCloud = false;
+Boolean CreateLocal = true;
 
 #region Cloud
 if (FromCloud)
@@ -29,10 +29,10 @@ if (FromCloud)
 
     company.EventStatus = new();
 
-    company.Advisors["master"].Skills["Carpentry"].Full = 21;
-    company.Advisors["advisor1"].Skills["Tinker"].Full = 31;
+    company.Advisors["master"].Skills["Carpentry"].Unmod = 21;
+    company.Advisors["advisor1"].Skills["Tinker"].Unmod = 31;
     company.EventStatus.NextStage = Event.BrokenCartOne;
-    user.TimePoints = 1000;
+    user.GainTimePoints(1000);
 
     string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);
     Console.WriteLine(returnString);

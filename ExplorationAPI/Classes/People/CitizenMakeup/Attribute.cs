@@ -20,8 +20,12 @@ namespace People
             Max = max;
         }
         #endregion
-        public int Full { get; set; }
-        public int Unmodified { get; set; }
+        public int Full { get; internal set; }
+        public int Unmodified { get; internal set; }
         public int Max { get; set; }
+        public void UpdateFull()
+        {
+            Full = Unmodified;
+        }
     }
 }

@@ -8,17 +8,16 @@ namespace People
         public Stat(int unmod, int racialModifier)
         {
             Random random = new Random();
-            Unmodified = unmod;
-            Full = unmod + racialModifier;
+            Unmod = unmod;
             Max = random.Next(250,350);
             RacialModifier = racialModifier;
             Known = false;
         }
 
         [JsonConstructor]
-        public Stat(int unmodified, int full, int max, int racialModifier, Boolean known)
+        public Stat(int unmod, int full, int max, int racialModifier, Boolean known)
         {
-            Unmodified = unmodified;
+            Unmod = unmod;
             Full = full;
             Max = max;
             RacialModifier = racialModifier;
@@ -26,11 +25,31 @@ namespace People
         }
         #endregion
 
-        public int Unmodified { get; set; }
-        public int Full { get; set; }
         public int Max { get; set; }
-        public int RacialModifier { get; set; }
         public Boolean Known { get; set; }
+
+
+        private int _unmod;
+        public int Unmod {
+            get { return _unmod; }
+            set {_unmod = value;
+                _full = _unmod + _racialModifier;
+            }
+        }
+        private int _full;
+        public int Full {
+            get { return _full; }
+            internal set { _full = value;
+                _full = _unmod + _racialModifier;
+            }
+        }
+        private int _racialModifier;
+        public int RacialModifier {
+            get { return _racialModifier; }
+            set {_racialModifier = value;
+                _full = _unmod + _racialModifier;
+            }
+        }
     }
 
     public class DerivedStat

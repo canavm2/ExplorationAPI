@@ -1,0 +1,7 @@
+﻿name,source,type,modifiedvalue,value,temporary,duration,description
+skullduggery10,trait,skill,Skullduggery,10,false,0,Skullduggery +10
+diplomacy-5,trait,skill,Diplomacy,-5,false,0,Diplomacy -5
+persuation5,trait,skill,Persuation,5,false,0,Persuation +5
+academia15,trait,skill,Academia,15,false,0,Academia +15
+history10,trait,skill,History,10,false,0,History +10
+cha-5,trait,stat,cha,-5,false,0,CHA -5

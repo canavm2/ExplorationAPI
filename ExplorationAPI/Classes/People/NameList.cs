@@ -13,7 +13,7 @@ namespace People
         #region Constructors
         public NameList()
         {
-            string path = @"C:\Users\canav\Documents\ExplorationProject\exploration_classes\csv_files\names.csv";
+            string path = @"C:\Users\canav\Documents\ExplorationAPI\csv_files\names.csv";
             string[] lines = System.IO.File.ReadAllLines(path);
             string[] female_array = lines[0].Split(',');
             string[] male_array = lines[1].Split(',');
