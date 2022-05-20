@@ -31,7 +31,7 @@ namespace People
         }
         #endregion
 
-        public string Name;
-        public Dictionary<string, int> StatModifiers;
+        public string Name { get; set; }
+        public Dictionary<string, int> StatModifiers { get; set; }
     }
 }

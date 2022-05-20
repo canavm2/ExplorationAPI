@@ -41,7 +41,7 @@ namespace Users
         public byte[] PasswordSalt { get; set; }
         public Guid id { get; set; }
         public Guid CompanyId { get; set; }
-        public double TimePoints { get; set; }
+        public double TimePoints { get; private set; }
         public bool Admin { get; set; }
         #endregion
 
