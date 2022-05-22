@@ -11,20 +11,20 @@ namespace People
             StatModifiers = new();
             if (name == "Southernman")
             {
-                StatModifiers["INT"] = 20;
+                StatModifiers[Stat.INT] = 20;
             }
             else if (name == "Northman")
             {
-                StatModifiers["STR"] = 20;
+                StatModifiers[Stat.STR] = 20;
             }
             else
             {
                 Name = "Human"; //Default in case misspelled.
-                StatModifiers["LDR"] = 20;
+                StatModifiers[Stat.LDR] = 20;
             }
         }
         [JsonConstructor]
-        public Race(string name, Dictionary<string, int> statModifiers)
+        public Race(string name, Dictionary<Stat, int> statModifiers)
         {
             Name = name;
             StatModifiers = statModifiers;
@@ -32,6 +32,6 @@ namespace People
         #endregion
 
         public string Name { get; set; }
-        public Dictionary<string, int> StatModifiers { get; set; }
+        public Dictionary<Stat, int> StatModifiers { get; set; }
     }
 }

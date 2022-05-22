@@ -26,21 +26,21 @@ namespace People
         {
             //Iterates over all the Primary stats, and provides a string that describes it
             string primaryDesc = "";
-            foreach (KeyValuePair<string, Stat> stat in PrimaryStats)
+            foreach (KeyValuePair<Stat, StatBlock> stat in PrimaryStats)
             {
                 if (stat.Value.Known || full)
                 {
-                    primaryDesc += $"{stat.Key.ToUpper()}: {stat.Value.Full.ToString()}";
+                    primaryDesc += $"{stat.Key}: {stat.Value.Full}";
                     // Adds information for devs
                     if (stat.Value.RacialModifier != 0 & full) primaryDesc += $", {this.Race.Name}: {stat.Value.RacialModifier}";
                         primaryDesc += "\n";
                 }
-                else primaryDesc += $"{stat.Key.ToUpper()}: ?? \n";
+                else primaryDesc += $"{stat.Key}: ?? \n";
             }
             string derivedDesc = "";
-            foreach (KeyValuePair<string, DerivedStat> stat in DerivedStats)
+            foreach (KeyValuePair<DerivedStat, DerivedStatBlock> stat in DerivedStats)
             {
-                derivedDesc += $"{stat.Key.ToUpper()}: {stat.Value.Full.ToString()}\n";
+                derivedDesc += $"{stat.Key}: {stat.Value.Full}\n";
             }
             string description =
                 $"Primary Stats:\n" +
@@ -56,7 +56,7 @@ namespace People
             string primaryDesc = "";
             foreach (var skill in Skills)
             {
-                if (skill.Value.Known || full) primaryDesc += $"{skill.Key.ToUpper()}({skill.Value.pStat},{skill.Value.sStat}): {skill.Value.Full}\n";
+                if (skill.Value.Known || full) primaryDesc += $"{skill.Key}({skill.Value.pStat},{skill.Value.sStat}): {skill.Value.Full}\n";
                 if (full) primaryDesc += $"     Unmod: {skill.Value.Unmod}, StatAdj: {skill.Value.StatAdjustment}\n";
             }
             return primaryDesc;

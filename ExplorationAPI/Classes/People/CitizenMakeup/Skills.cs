@@ -5,14 +5,45 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-//using Newtonsoft.Json;
 using FileTools;
 
 namespace People
 {
-    public class Skill
+    public enum Skill
     {
-        public Skill(int unmod, string pstat, string sstat)
+            Academia,
+            Athletics,
+            AnimalHandling,
+            Blacksmithing,
+            Carpentry,
+            Cooking,
+            Diplomacy,
+            Drill,
+            Engineering,
+            FirstAid,
+            History,
+            Hunting,
+            Law,
+            Leadership,
+            Leatherworking,
+            Martial,
+            Medical,
+            Metalworking,
+            Pathfinding,
+            Persuation,
+            Politics,
+            Prospecting,
+            Refining,
+            Quartermastery,
+            Skullduggery,
+            Stealth,
+            Survival,
+            Tactics,
+            Tinker
+    }
+    public class SkillBlock
+    {
+        public SkillBlock(int unmod, Stat pstat, Stat sstat)
         {
             Full = unmod;
             Unmod = unmod;
@@ -23,7 +54,7 @@ namespace People
         }
 
         [JsonConstructor]
-        public Skill(int full, int unmod, string pstat, string sstat, bool known, int statAdjustment)
+        public SkillBlock(int full, int unmod, Stat pstat, Stat sstat, bool known, int statAdjustment)
         {
             Full = full;
             Unmod = unmod;
@@ -55,11 +86,11 @@ namespace People
                 _full = _unmod + _statAdjustment;
             }
         }
-        public string pStat { get; }
-        public string sStat { get; }
+        public Stat pStat { get; }
+        public Stat sStat { get; }
         public bool Known { get; set; }
 
-        public void Update(Dictionary<string, Stat> primaryStats)
+        public void Update(Dictionary<Stat, StatBlock> primaryStats)
         {
             StatAdjustment = (primaryStats[pStat].Full / 10) + (primaryStats[sStat].Full / 5);
         }

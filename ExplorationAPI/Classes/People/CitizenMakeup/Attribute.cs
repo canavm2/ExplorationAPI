@@ -2,30 +2,33 @@
 
 namespace People
 {
-    public class Attribute
+    public enum Attribute
+    {
+        Health,
+        Happiness,
+        Motivation,
+        Psyche
+    }
+    public class AttributeBlock
     {
         #region Constructors
-        public Attribute()
+        public AttributeBlock()
         {
-            Full = 100;
-            Unmodified = 100;
+            Unmod = 100;
             Max = 300;
         }
 
         [JsonConstructor]
-        public Attribute(int full, int unmodified, int max)
+        public AttributeBlock(int unmod, int max)
         {
-            Full = full;
-            Unmodified = unmodified;
+            Unmod = unmod;
             Max = max;
         }
         #endregion
-        public int Full { get; internal set; }
-        public int Unmodified { get; internal set; }
-        public int Max { get; set; }
-        public void UpdateFull()
-        {
-            Full = Unmodified;
-        }
+        public int Full { get { return _unmod; } }
+        private int _unmod;
+        public int Unmod { get { return _unmod; } internal set { _unmod = value; } }
+        private int _max;
+        public int Max { get { return _max; } internal set { _max = value; } }
     }
 }

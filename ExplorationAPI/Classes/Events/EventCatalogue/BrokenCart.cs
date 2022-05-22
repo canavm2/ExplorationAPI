@@ -15,7 +15,7 @@
             status.Options.Add(option);
 
 
-            List<Citizen> advisors = FindAdvisorsSkill(company, 2, "Carpentry", 20);
+            List<Citizen> advisors = FindAdvisorsSkill(company, 2, Skill.Carpentry, 20);
             if (advisors.Count > 0) foreach (Citizen advisor in advisors)
                 {
                     option = new EventOption();
@@ -26,7 +26,7 @@
                     status.Options.Add(option);
                 }
 
-            advisors = FindAdvisorsSkill(company, 1, "Tinker", 30);
+            advisors = FindAdvisorsSkill(company, 1, Skill.Tinker, 30);
             if (advisors.Count > 0) foreach (Citizen advisor in advisors)
                 {
                     option = new EventOption();

@@ -29,8 +29,8 @@ if (FromCloud)
 
     company.EventStatus = new();
 
-    company.Advisors["master"].Skills["Carpentry"].Unmod = 21;
-    company.Advisors["advisor1"].Skills["Tinker"].Unmod = 31;
+    company.Advisors["master"].Skills[Skill.Carpentry].Unmod = 21;
+    company.Advisors["advisor1"].Skills[Skill.Tinker].Unmod = 31;
     company.EventStatus.NextStage = Event.BrokenCartOne;
     user.GainTimePoints(1000);
 

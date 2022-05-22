@@ -51,6 +51,7 @@ namespace Company
                 Recruits.Add("recruit" + (i+1).ToString(), recruit);
             }
             Skills = new();
+            foreach (Skill skill in Enum.GetValues(typeof(Skill))) { Skills.Add(skill, new(0)); }
             UpdateCompanySkills();
         }
 
@@ -60,7 +61,7 @@ namespace Company
             Guid Id,
             Dictionary<string,Citizen> advisors,
             Dictionary<string,Relationship> relationships,
-            Dictionary<string, CompanySkill> skills,
+            Dictionary<Skill, CompanySkillBlock> skills,
             Guid userId,
             Dictionary<string, Citizen> recruits,
             DateTime lastRecruitRecycle,
@@ -85,7 +86,7 @@ namespace Company
         public Guid UserId { get; set; }
         public Dictionary<string, Citizen> Advisors { get; set; }
         public Dictionary<string, Relationship> Relationships { get; set; }
-        public Dictionary<string, CompanySkill> Skills { get; set; }
+        public Dictionary<Skill, CompanySkillBlock> Skills { get; set; }
         public Dictionary<string, Citizen> Recruits { get; set; }
         public DateTime LastRecruitRecycle { get; set; }
         public EventStatus EventStatus { get; set; } = new();

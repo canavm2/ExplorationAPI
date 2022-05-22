@@ -38,13 +38,13 @@ namespace People
             DerivedStats = new();
             Modifiers = new();
 
-            foreach (string pstat in listTool.PrimaryStats)
-            {
+            foreach (Stat pstat in Enum.GetValues(typeof(Stat)))
+                {
                 int racialModifier = 0;
                 if (Race.StatModifiers.ContainsKey(pstat)) racialModifier = Race.StatModifiers[pstat];
                 PrimaryStats[pstat] = new(random.Next(50, 200), racialModifier);
             }
-            foreach (string dstat in listTool.DerivedStats)
+            foreach (DerivedStat dstat in Enum.GetValues(typeof(DerivedStat)))
             {
                 DerivedStats[dstat] = new(0);
             }
@@ -59,7 +59,7 @@ namespace People
             double startSkills = 5;
             double highskill = 1;
             double chance = 0;
-            foreach (var kvp in listTool.SkillsList)
+            foreach (Skill skill in Enum.GetValues(typeof(Skill)))
             {
                 // This determines if its a starting skill and sets it higher
                 // This line avoids deividing by zero
@@ -70,10 +70,10 @@ namespace People
                     if (random.NextDouble() < (chance))
                     { 
                         highskill--;
-                        Skills[kvp.Key] = new(random.Next(200,300), kvp.Value[0], kvp.Value[1]);
-                    } else Skills[kvp.Key] = new(random.Next(100, 175), kvp.Value[0], kvp.Value[1]);
+                        Skills[skill] = new(random.Next(200,300), listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
+                    } else Skills[skill] = new(random.Next(100, 175), listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
                     startSkills--;
-                } else Skills[kvp.Key] = new(0, kvp.Value[0], kvp.Value[1]);
+                } else Skills[skill] = new(0, listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
                 nSkills--;
             }
             CalculateSkills();
@@ -81,8 +81,7 @@ namespace People
 
             #region ConstructAttributes
             Attributes = new();
-            foreach (string attribute in listTool.Attributes)
-                Attributes.Add(attribute, new Attribute());
+            foreach (Attribute attribute in Enum.GetValues(typeof(Attribute))) Attributes.Add(attribute, new AttributeBlock());
             #endregion
 
             #region ConstructTraits
@@ -97,11 +96,11 @@ namespace People
             string gender,
             Race race,
             Guid Id, int age,
-            Dictionary<string, Skill> skills,
-            Dictionary<string, Stat> primarystats,
-            Dictionary<string, DerivedStat> derivedstats,
+            Dictionary<Skill, SkillBlock> skills,
+            Dictionary<Stat, StatBlock> primarystats,
+            Dictionary<DerivedStat, DerivedStatBlock> derivedstats,
             Dictionary<string, Modifier> modifiers,
-            Dictionary<string, Attribute> attributes,
+            Dictionary<Attribute, AttributeBlock> attributes,
             Dictionary<string, Trait> traits
             )
         {
@@ -125,11 +124,11 @@ namespace People
         public string Name { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
-        public Dictionary<string, Skill> Skills { get; set; }
+        public Dictionary<Skill, SkillBlock> Skills { get; set; }
         public Race Race { get; set; }
-        public Dictionary<string, Stat> PrimaryStats { get; set; }
-        public Dictionary<string, DerivedStat> DerivedStats { get; set; }
-        public Dictionary<string, Attribute> Attributes { get; set; }
+        public Dictionary<Stat, StatBlock> PrimaryStats { get; set; }
+        public Dictionary<DerivedStat, DerivedStatBlock> DerivedStats { get; set; }
+        public Dictionary<Attribute, AttributeBlock> Attributes { get; set; }
         public Dictionary<string,Modifier> Modifiers { get; set; }
         public Dictionary<string,Trait> Traits { get; set; }
         #endregion

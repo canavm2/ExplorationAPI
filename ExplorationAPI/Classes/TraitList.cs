@@ -14,32 +14,32 @@ namespace FileTools
     //It reads them from the .csv files
     public class TraitList
     {
-        public TraitList()
-        {
-            Traits = new();
-            ListTool listTool = new();
-            string[] lines = System.IO.File.ReadAllLines(path);
-            for (int i = 1; i < lines.Length; i++)
-            {
-                List<Modifier> modifiers = new();
-                string[] line = lines[i].Split(",");
-                for (int j = 2; j < line.Length; j++)
-                {
-                    string[] split = line[j].Split(".");
-                    string modifiedvalue = split[0];
-                    int value = int.Parse(split[1]);
-                    string type = "";
-                    if (listTool.PrimaryStats.Contains(modifiedvalue)) type = "stat";
-                    if (listTool.SkillsList.ContainsKey(modifiedvalue)) type = "skill";
-                    if (listTool.Attributes.Contains(modifiedvalue)) type = "attribute";
-                    string description = $"{modifiedvalue} {value}";
+        //public TraitList()
+        //{
+        //    Traits = new();
+        //    ListTool listTool = new();
+        //    string[] lines = System.IO.File.ReadAllLines(path);
+        //    for (int i = 1; i < lines.Length; i++)
+        //    {
+        //        List<Modifier> modifiers = new();
+        //        string[] line = lines[i].Split(",");
+        //        for (int j = 2; j < line.Length; j++)
+        //        {
+        //            string[] split = line[j].Split(".");
+        //            string modifiedvalue = split[0];
+        //            int value = int.Parse(split[1]);
+        //            string type = "";
+        //            if (listTool.PrimaryStats.Contains(modifiedvalue)) type = "stat";
+        //            if (listTool.SkillsList.ContainsKey(modifiedvalue)) type = "skill";
+        //            if (listTool.Attributes.Contains(modifiedvalue)) type = "attribute";
+        //            string description = $"{modifiedvalue} {value}";
 
-                    modifiers.Add(new Modifier(line[j], "trait", type, modifiedvalue, value, description));
-                }
-                Trait trait = new Trait(line[0],int.Parse(line[1]),modifiers);
-                Traits[line[0]] = trait;
-            }
-        }
+        //            modifiers.Add(new Modifier(line[j], "trait", type, modifiedvalue, value, description));
+        //        }
+        //        Trait trait = new Trait(line[0],int.Parse(line[1]),modifiers);
+        //        Traits[line[0]] = trait;
+        //    }
+        //}
 
         [JsonConstructor]
         public TraitList(Dictionary<string, Trait> traits)

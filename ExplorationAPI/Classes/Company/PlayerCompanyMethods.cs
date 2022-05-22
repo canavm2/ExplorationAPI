@@ -45,7 +45,7 @@ namespace Company
         public string DescribeCompanySkills()
         {
             string primaryDesc = "";
-            foreach (KeyValuePair<string, CompanySkill> skill in Skills)
+            foreach (var skill in Skills)
             {
                 primaryDesc += "{skill.Key.ToUpper()}: {skill.Value.Full}\n";
             }
@@ -55,13 +55,13 @@ namespace Company
         //Ensure all the skills are up to date
         internal void UpdateCompanySkills()
         {
-            foreach (KeyValuePair<string, CompanySkill> kvp in Skills)
+            foreach (var skill in Skills)
             {
-                UpdateCompanySkill(kvp.Key, "voc");
+                UpdateCompanySkill(skill.Key);
             }
         }
         //Update a single skill
-        internal void UpdateCompanySkill(string skill, string type)
+        internal void UpdateCompanySkill(Skill skill)
         {
             List<int> skillvalues = new();
             foreach (Citizen citizen in Advisors.Values)

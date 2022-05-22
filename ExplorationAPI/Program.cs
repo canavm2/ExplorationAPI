@@ -15,10 +15,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 
-Boolean NewData = true;
+Boolean NewData = false;
+
+//FileTool fileTool = await StartupTools.ConstructFileTool();
+//LoadTool loadTool = new();
+//await fileTool.StoreLoadTool(loadTool);
 
 #region DataSetup
-Guid LoadToolGuid = new Guid("fd46a92d-5c61-4afa-b6bf-63876fae3a5c");
+Guid LoadToolGuid = new Guid("80aee562-e9af-4758-929b-d29bb2dad135");
 FileTool fileTool = await StartupTools.ConstructFileTool();
 LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
 CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);

@@ -39,7 +39,7 @@ namespace FileTools
             CitizenCache citizenCache;
             if (newData)
             {
-                citizenCache = new CitizenCache(10);
+                citizenCache = new CitizenCache(100);
                 //Console.WriteLine($"femalecitizens has: {citizenCache.FemaleCitizens.Count} items.\nThe first female is:\n{citizenCache.FemaleCitizens[0].Describe()}");
                 //Console.WriteLine($"malecitizens has: {citizenCache.MaleCitizens.Count} items.\nThe first male is:\n{citizenCache.MaleCitizens[0].Describe()}");
                 //Console.WriteLine($"nbcitizens has: {citizenCache.NBCitizens.Count} items.\nThe first non-binary is:\n{citizenCache.NBCitizens[0].Describe()}");
@@ -130,49 +130,69 @@ namespace FileTools
         public string AdminCheck { get; set; }
         #endregion
 
-        #region methods
+        #region Methods
         public async Task StoreCitizens(CitizenCache citizens)
         {
+            containerId = "CitizenCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CitizenCache> response = await container.UpsertItemAsync<CitizenCache>(citizens);
         }
         public async Task<CitizenCache> ReadCitizens(Guid id)
         {
+            containerId = "CitizenCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CitizenCache> response = await container.ReadItemAsync<CitizenCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (CitizenCache)response;
         }
         public async Task StoreCompanies(CompanyCache playerCompany)
         {
+            containerId = "CompanyCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CompanyCache> response = await container.UpsertItemAsync<CompanyCache>(playerCompany);
         }
         public async Task<CompanyCache> ReadCompanies(Guid id)
         {
+            containerId = "CompanyCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<CompanyCache> response = await container.ReadItemAsync<CompanyCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (CompanyCache)response;
         }
         public async Task StoreRelationshipCache(RelationshipCache relationships)
         {
+            containerId = "RelationshipCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<RelationshipCache> response = await container.UpsertItemAsync<RelationshipCache>(relationships);
         }
         public async Task<RelationshipCache> ReadRelationshipCache(Guid id)
         {
+            containerId = "RelationshipCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<RelationshipCache> response = await container.ReadItemAsync<RelationshipCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (RelationshipCache)response;
         }
         public async Task StoreLoadTool(LoadTool loadTool)
         {
+            containerId = "LoadTool";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<LoadTool> response = await container.UpsertItemAsync<LoadTool>(loadTool);
         }
         public async Task<LoadTool> ReadLoadTool(Guid id)
         {
+            containerId = "LoadTool";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<LoadTool> response = await container.ReadItemAsync<LoadTool>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (LoadTool)response;
         }
         public async Task StoreUsers(UserCache userCache)
         {
+            containerId = "UserCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<UserCache> response = await container.UpsertItemAsync<UserCache>(userCache);
         }
         public async Task<UserCache> ReadUsers(Guid id)
         {
+            containerId = "UserCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
             ItemResponse<UserCache> response = await container.ReadItemAsync<UserCache>(id: id.ToString(), partitionKey: new PartitionKey(id.ToString()));
             return (UserCache)response;
         }
@@ -226,43 +246,40 @@ namespace FileTools
     public class ListTool
     {
         public ListTool(){}
-        public Dictionary<string, List<string>> SkillsList = new()
+        public Dictionary<Skill, List<Stat>> SkillsList = new()
         {
             // TODO FIX THESE, Stats are wrong
-            {"Academia", new List<string>{"INT","WIS"} },
-            {"Athletics", new List<string>{"STR","AGI"} },
-            {"Animal Handling", new List<string>{"CHA","WIS"} },
-            {"Blacksmithing", new List<string>{"STR","INT"} },
-            {"Carpentry", new List<string>{"INT","AGI"} },
-            {"Cooking", new List<string>{"WIS","CHA"} },
-            {"Diplomacy", new List<string>{"LDR","CHA"} },
-            {"Drill", new List<string>{"LDR","AGI"} },
-            {"Engineering", new List<string>{"INT","WIS"} },
-            {"First Aid", new List<string>{"WIS","CHA"} },
-            {"History", new List<string>{"WIS","INT"} },
-            {"Hunting", new List<string>{"AGI","WIS"} },
-            {"Law", new List<string>{"INT","WIS"} },
-            {"Leadership", new List<string>{"LDR","WIS"} },
-            {"Leatherworking", new List<string>{"WIS","AGI"} },
-            {"Martial", new List<string>{"INT","AGI"} },
-            {"Medical", new List<string>{"INT","AGI"} },
-            {"Metalworking", new List<string>{"STR","INT"} },
-            {"Pathfinding", new List<string>{"WIS","INT"} },
-            {"Persuation", new List<string>{"CHA","WIS"} },
-            {"Politics", new List<string>{"LDR","CHA"} },
-            {"Prospecting", new List<string>{"INT","WIS"} },
-            {"Refining", new List<string>{"INT","WIS"} },
-            {"Quartermastery", new List<string>{"INT","WIS"} },
-            {"Skullduggery", new List<string>{"INT","WIS"} },
-            {"Stealth", new List<string>{"INT","WIS"} },
-            {"Survival", new List<string>{"INT","WIS"} },
-            {"Tactics", new List<string>{"INT","WIS"} },
-            {"Tinker", new List<string>{"INT","WIS"} }
+            {Skill.Academia, new List<Stat>{Stat.INT, Stat.WIS } },
+            {Skill.Athletics, new List<Stat>{ Stat.STR, Stat.AGI } },
+            {Skill.AnimalHandling, new List<Stat>{ Stat.CHA, Stat.WIS } },
+            {Skill.Blacksmithing, new List<Stat>{ Stat.STR, Stat.INT } },
+            {Skill.Carpentry, new List<Stat>{ Stat.INT, Stat.AGI } },
+            {Skill.Cooking, new List<Stat>{ Stat.WIS, Stat.CHA } },
+            {Skill.Diplomacy, new List<Stat>{ Stat.LDR, Stat.CHA } },
+            {Skill.Drill, new List<Stat>{ Stat.LDR, Stat.AGI } },
+            {Skill.Engineering, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.FirstAid, new List<Stat>{ Stat.WIS, Stat.CHA } },
+            {Skill.History, new List<Stat>{ Stat.WIS, Stat.INT } },
+            {Skill.Hunting, new List<Stat>{ Stat.AGI, Stat.WIS } },
+            {Skill.Law, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Leadership, new List<Stat>{ Stat.LDR, Stat.WIS } },
+            {Skill.Leatherworking, new List<Stat>{ Stat.WIS, Stat.AGI } },
+            {Skill.Martial, new List<Stat>{ Stat.INT, Stat.AGI } },
+            {Skill.Medical, new List<Stat>{ Stat.INT, Stat.AGI } },
+            {Skill.Metalworking, new List<Stat>{ Stat.STR, Stat.INT } },
+            {Skill.Pathfinding, new List<Stat>{ Stat.WIS, Stat.INT } },
+            {Skill.Persuation, new List<Stat>{ Stat.CHA, Stat.WIS } },
+            {Skill.Politics, new List<Stat>{ Stat.LDR, Stat.CHA } },
+            {Skill.Prospecting, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Refining, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Quartermastery, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Skullduggery, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Stealth, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Survival, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Tactics, new List<Stat>{ Stat.INT, Stat.WIS } },
+            {Skill.Tinker, new List<Stat>{ Stat.INT, Stat.WIS } }
         };
 
-        public List<string> ExpSkillsList = new() { "exp1", "exp2", "exp3" };
-        public List<string> PrimaryStats = new() { "STR", "AGI", "CON", "INT", "WIS", "PER", "CHA", "LDR", "WIL"};
-        public List<string> DerivedStats = new() { "PHYS", "MNTL", "SOCL" };
         public List<string> Attributes = new List<string>() {
                 "Health",
                 "Happiness",

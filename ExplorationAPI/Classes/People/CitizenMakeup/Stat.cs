@@ -2,10 +2,28 @@
 
 namespace People
 {
-    public class Stat
+    public enum Stat
+    {
+        STR,
+        AGI,
+        CON,
+        INT,
+        WIS,
+        PER,
+        CHA,
+        LDR,
+        WIL
+    }
+    public enum DerivedStat
+    {
+        PHYS,
+        MNTL,
+        SOCL
+    }
+    public class StatBlock
     {
         #region Constructors
-        public Stat(int unmod, int racialModifier)
+        public StatBlock(int unmod, int racialModifier)
         {
             Random random = new Random();
             Unmod = unmod;
@@ -15,7 +33,7 @@ namespace People
         }
 
         [JsonConstructor]
-        public Stat(int unmod, int full, int max, int racialModifier, Boolean known)
+        public StatBlock(int unmod, int full, int max, int racialModifier, Boolean known)
         {
             Unmod = unmod;
             Full = full;
@@ -26,7 +44,7 @@ namespace People
         #endregion
 
         public int Max { get; set; }
-        public Boolean Known { get; set; }
+        public bool Known { get; set; }
 
 
         private int _unmod;
@@ -39,7 +57,7 @@ namespace People
         private int _full;
         public int Full {
             get { return _full; }
-            internal set { _full = value;
+            private set { _full = value;
                 _full = _unmod + _racialModifier;
             }
         }
@@ -52,11 +70,11 @@ namespace People
         }
     }
 
-    public class DerivedStat
+    public class DerivedStatBlock
     {
         #region Constructors
         [JsonConstructor]
-        public DerivedStat(int full)
+        public DerivedStatBlock(int full)
         {
             Full = full;
         }

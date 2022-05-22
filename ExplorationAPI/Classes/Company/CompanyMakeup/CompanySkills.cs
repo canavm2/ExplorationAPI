@@ -10,16 +10,16 @@ using FileTools;
 
 namespace Company
 {
-    public class CompanySkill
+    public class CompanySkillBlock
     {
-        public CompanySkill(int unmod)
+        public CompanySkillBlock(int unmod)
         {
             Full = unmod;
             Unmodified = unmod;
         }
 
         [JsonConstructor]
-        public CompanySkill(int full, int unmodified)
+        public CompanySkillBlock(int full, int unmodified)
         {
             Full = full;
             Unmodified = unmodified;
