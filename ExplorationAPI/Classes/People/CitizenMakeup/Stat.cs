@@ -30,16 +30,18 @@ namespace People
             Max = random.Next(250,350);
             RacialModifier = racialModifier;
             Known = false;
+            _totalModifiedValue = 0;
+            Modifiers = new();
         }
 
         [JsonConstructor]
-        public StatBlock(int unmod, int full, int max, int racialModifier, Boolean known)
+        public StatBlock(int unmod, int max, int racialModifier, Boolean known, Dictionary<string, StatModifier> modifiers)
         {
             Unmod = unmod;
-            Full = full;
             Max = max;
             RacialModifier = racialModifier;
             Known = known;
+            Modifiers = modifiers;
         }
         #endregion
 
@@ -50,23 +52,32 @@ namespace People
         private int _unmod;
         public int Unmod {
             get { return _unmod; }
-            set {_unmod = value;
-                _full = _unmod + _racialModifier;
-            }
+            set {_unmod = value; }
         }
-        private int _full;
         public int Full {
-            get { return _full; }
-            private set { _full = value;
-                _full = _unmod + _racialModifier;
-            }
+            get { return _unmod + _racialModifier + _totalModifiedValue; }
         }
         private int _racialModifier;
         public int RacialModifier {
             get { return _racialModifier; }
-            set {_racialModifier = value;
-                _full = _unmod + _racialModifier;
+            set {_racialModifier = value; }
+        }
+        private int _totalModifiedValue;
+
+        public Dictionary<string, StatModifier> Modifiers { get; internal set; }
+
+        public void ApplyModifier(StatModifier modifier)
+        {
+            if (Modifiers.ContainsKey(modifier.Name))
+            {
+
             }
+            Modifiers.Add(modifier.Name, modifier);
+            _totalModifiedValue += modifier.Value;
+        }
+        public void RemoveModifier(string name)
+        {
+
         }
     }
 
@@ -81,4 +92,5 @@ namespace People
         #endregion
         public int Full { get; set; }
     }
+
 }

@@ -28,13 +28,13 @@ namespace People
         public Boolean Known { get; set; }
         public List<Modifier> Modifiers { get; set; }
 
-        public string Summary()
-        {
-            string returnstring = $"\nTrait: {Name}." +
-                $"\nModifiers:\n";
-            foreach (Modifier modifier in Modifiers)
-                returnstring += modifier.Summary();
-            return returnstring;
-        }
+        //public string Summary()
+        //{
+        //    string returnstring = $"\nTrait: {Name}." +
+        //        $"\nModifiers:\n";
+        //    foreach (Modifier modifier in Modifiers)
+        //        returnstring += modifier.Summary();
+        //    return returnstring;
+        //}
     }
 }

@@ -54,36 +54,36 @@ namespace FileTools
 
     //An Object to hold all the modifiers, currently not needed, since the traits hold the modifiers
     //new modifiers will probably get built from simple strings that can be parsed into modifiers.
-    public class ModifierList
-    {
-        public ModifierList()
-        {
-            Modifiers = new();
-            string[] lines = System.IO.File.ReadAllLines(path);
-            for (int i= 1; i < lines.Length; i++)
-            {
-                string[] line = lines[i].Split(",");
-                Modifier modifier = new(
-                    line[0],
-                    line[1],
-                    line[2],
-                    line[3],
-                    Int32.Parse(line[4]),
-                    line[7],
-                    Convert.ToBoolean(line[5]),
-                    Int32.Parse(line[6])                    
-                    );
-                Modifiers[line[0]] = modifier;
-            }
-        }
+    //public class ModifierList
+    //{
+    //    public ModifierList()
+    //    {
+    //        Modifiers = new();
+    //        string[] lines = System.IO.File.ReadAllLines(path);
+    //        for (int i= 1; i < lines.Length; i++)
+    //        {
+    //            string[] line = lines[i].Split(",");
+    //            Modifier modifier = new(
+    //                line[0],
+    //                line[1],
+    //                line[2],
+    //                line[3],
+    //                Int32.Parse(line[4]),
+    //                line[7],
+    //                Convert.ToBoolean(line[5]),
+    //                Int32.Parse(line[6])                    
+    //                );
+    //            Modifiers[line[0]] = modifier;
+    //        }
+    //    }
 
-        [JsonConstructor]
-        public ModifierList(Dictionary<string, Modifier> modifiers)
-        {
-            Modifiers = modifiers;
-        }
+    //    [JsonConstructor]
+    //    public ModifierList(Dictionary<string, Modifier> modifiers)
+    //    {
+    //        Modifiers = modifiers;
+    //    }
 
-        public Dictionary<string, Modifier> Modifiers { get; set; }
-        string path = @"C:\Users\canav\Documents\ExplorationProject\exploration_classes\csv_files\modifiers.csv";
-    }
+    //    public Dictionary<string, Modifier> Modifiers { get; set; }
+    //    string path = @"C:\Users\canav\Documents\ExplorationProject\exploration_classes\csv_files\modifiers.csv";
+    //}
 }
