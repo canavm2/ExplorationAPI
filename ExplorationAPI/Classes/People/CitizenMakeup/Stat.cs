@@ -45,14 +45,17 @@ namespace People
         }
         #endregion
 
-        public int Max { get; set; }
         public bool Known { get; set; }
 
-
+        private int _max;
+        public int Max {
+            get { return _max; }
+            internal set { _max = value; }
+        }
         private int _unmod;
         public int Unmod {
             get { return _unmod; }
-            set {_unmod = value; }
+            internal set {_unmod = value; }
         }
         public int Full {
             get { return _unmod + _racialModifier + _totalModifiedValue; }

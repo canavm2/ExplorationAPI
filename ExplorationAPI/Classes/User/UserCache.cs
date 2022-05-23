@@ -13,7 +13,6 @@ namespace Users
     {
         public Guid id { get; set; }
         public Dictionary<string, User> Users { get; set; }
-        public DateTime LastSave { get; set; }
         public bool CheckforUser(string userName);
         public void CreateNewUser(string username, byte[] hash, byte[] salt, CitizenCache citizenCache, CompanyCache companyCache);
     }
@@ -25,22 +24,19 @@ namespace Users
         {
             id = Guid.NewGuid();
             Users = new();
-            LastSave = DateTime.Now;
         }
 
         [JsonConstructor]
-        public UserCache(Guid Id, Dictionary<string, User> users, DateTime lastSave)
+        public UserCache(Guid Id, Dictionary<string, User> users)
         {
             id = Id;
             Users = users;
-            LastSave = lastSave;
         }
         #endregion
 
         #region Dictionaries and Properties
         public Guid id { get; set; }
         public Dictionary<string, User> Users { get; set; }
-        public DateTime LastSave { get; set; }
         #endregion
 
         #region Methods

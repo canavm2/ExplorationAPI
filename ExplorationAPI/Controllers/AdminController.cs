@@ -72,14 +72,11 @@ namespace ExplorationAPI.Controllers
         [HttpGet("save", Name = "Advance & Save")]
         public async Task<string> Save()
         {
-            DateTime currentDateTime = DateTime.Now;
-            TimeSpan timeSpan = currentDateTime - _userCache.LastSave;
-            double interval = timeSpan.TotalSeconds;
-            foreach (User user in _userCache.Users.Values)
+            long interval = 10000;
+            foreach (PlayerCompany company in _companyCache.PlayerCompanies.Values)
             {
-                user.GainTimePoints(interval);
+                company.TimeBlock.GainTimePoints(interval);
             }
-            _userCache.LastSave = currentDateTime;
             await _fileTool.StoreCitizens((CitizenCache)_citizenCache);
             await _fileTool.StoreCompanies((CompanyCache)_companyCache);
             await _fileTool.StoreRelationshipCache((RelationshipCache)_relationshipCache);

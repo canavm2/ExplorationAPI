@@ -12,15 +12,17 @@ namespace Company
 {
     public class TimeBlock
     {
-        public TimeBlock()
+        public TimeBlock(long time)
         {
             TimePoints = Convert.ToInt64(TimeSpan.FromDays(2).TotalSeconds);
+            Time = time;
         }
 
         [JsonConstructor]
-        public TimeBlock(long timepoints)
+        public TimeBlock(long timepoints, long time)
         {
             TimePoints = timepoints;
+            Time = time;
         }
 
         private long _timePoints;
@@ -40,10 +42,12 @@ namespace Company
             if (timePoints < this.TimePoints)
             {
                 _timePoints -= timePoints;
+                _time += timePoints;
                 return true;
             }
             else return false;
         }
         #endregion
     }
+
 }

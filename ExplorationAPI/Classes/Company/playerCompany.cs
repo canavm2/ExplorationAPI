@@ -11,12 +11,12 @@ using Relation;
 
 namespace Company
 {
-    //The object that holds everyhting about a company, should sit below a player account
+    //The object that holds everything about a company, should sit below a player account
     public partial class PlayerCompany
     {
         //Initialy building a company
         #region Constructor
-        internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache)
+        internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache, long time)
         {
             Relationships = new();
             if (advisors.Count != 7)
@@ -27,7 +27,7 @@ namespace Company
             Advisors = new();
             Recruits = new();
             EventStatus = new();
-            LastRecruitRecycle = DateTime.Now;
+            TimeBlock = new(time);
             AddAdvisor(master, "master");
             //Sets the first 5 citizens in advisors to the other advisors
             for (int i = 0; i < 5; i++)
@@ -44,7 +44,6 @@ namespace Company
 
             //Create an initial pool of Recruits
             Recruits = new();
-            LastRecruitRecycle = DateTime.Now;
             for (int i = 0; i < 4; i++)
             {
                 Citizen recruit = citizenCache.GetRandomCitizen();
@@ -64,8 +63,8 @@ namespace Company
             Dictionary<Skill, CompanySkillBlock> skills,
             Guid userId,
             Dictionary<string, Citizen> recruits,
-            DateTime lastRecruitRecycle,
-            EventStatus eventStatus)
+            EventStatus eventStatus,
+            TimeBlock timeBlock)
         {
             Name = name;
             id = Id;
@@ -75,6 +74,7 @@ namespace Company
             UserId = UserId;
             Recruits= recruits;
             EventStatus = eventStatus;
+            TimeBlock = timeBlock;
         }
 
 
@@ -88,8 +88,8 @@ namespace Company
         public Dictionary<string, Relationship> Relationships { get; set; }
         public Dictionary<Skill, CompanySkillBlock> Skills { get; set; }
         public Dictionary<string, Citizen> Recruits { get; set; }
-        public DateTime LastRecruitRecycle { get; set; }
-        public EventStatus EventStatus { get; set; } = new();
+        public EventStatus EventStatus { get; set; }
+        public TimeBlock TimeBlock { get; set; }
         #endregion
     }
 }

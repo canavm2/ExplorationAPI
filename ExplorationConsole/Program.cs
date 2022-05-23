@@ -32,7 +32,7 @@ if (FromCloud)
     company.Advisors["master"].Skills[Skill.Carpentry].Unmod = 21;
     company.Advisors["advisor1"].Skills[Skill.Tinker].Unmod = 31;
     company.EventStatus.NextStage = Event.BrokenCartOne;
-    user.GainTimePoints(1000);
+    company.TimeBlock.GainTimePoints(1000);
 
     string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);
     Console.WriteLine(returnString);
@@ -49,6 +49,6 @@ if (FromCloud)
 if (CreateLocal)
 {
     CitizenCache citizenCache = new CitizenCache(1);
-    Console.WriteLine(citizenCache.FemaleCitizens[0].Describe());
+    Console.WriteLine(citizenCache.FemaleCitizens[0].Describe(true));
 }
 #endregion

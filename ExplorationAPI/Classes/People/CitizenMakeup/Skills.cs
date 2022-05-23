@@ -50,20 +50,22 @@ namespace People
             pStat = pstat;
             sStat = sstat;
             Known = false;
+            Random random = new Random();
+            Max = random.Next(400, 600);
             if (Full > 200) Known = true;
         }
 
         [JsonConstructor]
-        public SkillBlock(int full, int unmod, Stat pstat, Stat sstat, bool known, int statAdjustment)
+        public SkillBlock(int full, int unmod, Stat pstat, Stat sstat, bool known, int statAdjustment, int max)
         {
             Full = full;
             Unmod = unmod;
             pStat = pstat;
             sStat = sstat;
             Known = known;
+            Max = max;
             StatAdjustment = statAdjustment;
         }
-
 
         private int _full;
         public int Full {
@@ -85,6 +87,11 @@ namespace People
             internal set { _statAdjustment = value;
                 _full = _unmod + _statAdjustment;
             }
+        }
+        private int _max;
+        public int Max {
+            get { return _max; }
+            internal set { _max = value; }
         }
         public Stat pStat { get; }
         public Stat sStat { get; }
