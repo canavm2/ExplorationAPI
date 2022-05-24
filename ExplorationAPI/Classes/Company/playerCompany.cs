@@ -27,7 +27,7 @@ namespace Company
             Advisors = new();
             Recruits = new();
             EventStatus = new();
-            TimeBlock = new(time);
+            TimeBlock = new();
             AddAdvisor(master, "master");
             //Sets the first 5 citizens in advisors to the other advisors
             for (int i = 0; i < 5; i++)

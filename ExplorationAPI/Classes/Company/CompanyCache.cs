@@ -14,6 +14,7 @@ namespace Company
         public Guid id { get; set; }
         public Dictionary<Guid, PlayerCompany> PlayerCompanies { get; set; }
         public Guid CreateNewCompany(ICitizenCache citizenCache, User user);
+        public long Time { get; set; }
     }
     public class CompanyCache : ICompanyCache
     {

@@ -12,37 +12,39 @@ namespace Company
 {
     public class TimeBlock
     {
-        public TimeBlock(long time)
+        public TimeBlock()
         {
-            TimePoints = Convert.ToInt64(TimeSpan.FromDays(2).TotalSeconds);
-            Time = time;
+            TimePoints = Convert.ToInt32(TimeSpan.FromDays(2).TotalSeconds);
+            LastAction = DateTime.Now;
         }
 
         [JsonConstructor]
-        public TimeBlock(long timepoints, long time)
+        public TimeBlock(int timepoints, DateTime lastAction)
         {
             TimePoints = timepoints;
-            Time = time;
+            LastAction = lastAction;
+
         }
 
-        private long _timePoints;
-        public long TimePoints { get { return _timePoints; } internal set { _timePoints = value; } }
-        private long _time;
-        public long Time { get { return _time; } internal set { _time = value; } }
+        private int _timePoints;
+        public int TimePoints {
+            get {
+                TimeSpan change = DateTime.UtcNow - LastAction;
+                int tpgain = Convert.ToInt32(change.TotalSeconds);
+                _timePoints += tpgain;
+                if (_timePoints > 345600) _timePoints = 345600;
+                return _timePoints; }
+            internal set { _timePoints = value; } }
+        public DateTime CurrentTime { get { return DateTime.UtcNow.Subtract(TimeSpan.FromSeconds(_timePoints)); } }
+        public DateTime LastAction;
 
         #region Methods
-        public void GainTimePoints(long timePoints)
-        {
-            long MaxTimePoints = 345600;  // Seconds in 4 days
-            if ((_timePoints + timePoints) > MaxTimePoints) _timePoints = MaxTimePoints;
-            else _timePoints += timePoints;
-        }
-        public bool SpendTimePoints(long timePoints)
+        public bool SpendTimePoints(int timePoints)
         {
             if (timePoints < this.TimePoints)
             {
                 _timePoints -= timePoints;
-                _time += timePoints;
+                LastAction = DateTime.UtcNow;
                 return true;
             }
             else return false;

@@ -45,7 +45,6 @@ namespace People
     {
         public SkillBlock(int unmod, Stat pstat, Stat sstat)
         {
-            Full = unmod;
             Unmod = unmod;
             pStat = pstat;
             sStat = sstat;
@@ -56,51 +55,42 @@ namespace People
         }
 
         [JsonConstructor]
-        public SkillBlock(int full, int unmod, Stat pstat, Stat sstat, bool known, int statAdjustment, int max)
+        public SkillBlock(int unmod, Stat pstat, Stat sstat, bool known, int max)
         {
-            Full = full;
             Unmod = unmod;
             pStat = pstat;
             sStat = sstat;
             Known = known;
             Max = max;
-            StatAdjustment = statAdjustment;
         }
 
-        private int _full;
         public int Full {
-            get {return _full; }
-            internal set {_full = value;
-                _full = _unmod + _statAdjustment;
-            }
+            get {return _unmod; }
         }
+
         private int _unmod;
         public int Unmod{
             get { return _unmod; }
-            set {_unmod = value;
-                _full = _unmod + _statAdjustment;
-            }
+            internal set { _unmod = value; }
         }
-        private int _statAdjustment;
-        public int StatAdjustment{
-            get { return _statAdjustment; }
-            internal set { _statAdjustment = value;
-                _full = _unmod + _statAdjustment;
-            }
-        }
+
+        //private int _statAdjustment;
+        //public int StatAdjustment{
+        //    get { return _statAdjustment; }
+        //    internal set { _statAdjustment = value;
+        //        _full = _unmod + _statAdjustment;
+        //    }
+        //}
+
         private int _max;
         public int Max {
             get { return _max; }
             internal set { _max = value; }
         }
+
         public Stat pStat { get; }
         public Stat sStat { get; }
         public bool Known { get; set; }
-
-        public void Update(Dictionary<Stat, StatBlock> primaryStats)
-        {
-            StatAdjustment = (primaryStats[pStat].Full / 10) + (primaryStats[sStat].Full / 5);
-        }
     }
 
 }

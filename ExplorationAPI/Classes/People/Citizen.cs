@@ -76,7 +76,6 @@ namespace People
                 } else Skills[skill] = new(0, listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
                 nSkills--;
             }
-            CalculateSkills();
             #endregion
 
             #region ConstructAttributes
@@ -124,10 +123,10 @@ namespace People
         public string Name { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
-        public Dictionary<Skill, SkillBlock> Skills { get; set; }
+        internal Dictionary<Skill, SkillBlock> Skills { get; set; }
         public Race Race { get; set; }
-        public Dictionary<Stat, StatBlock> PrimaryStats { get; set; }
-        public Dictionary<DerivedStat, DerivedStatBlock> DerivedStats { get; set; }
+        internal Dictionary<Stat, StatBlock> PrimaryStats { get; set; }
+        internal Dictionary<DerivedStat, DerivedStatBlock> DerivedStats { get; set; }
         public Dictionary<Attribute, AttributeBlock> Attributes { get; set; }
         public Dictionary<string,Modifier> Modifiers { get; set; }
         public Dictionary<string,Trait> Traits { get; set; }

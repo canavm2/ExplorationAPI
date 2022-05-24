@@ -34,13 +34,6 @@ public class APICalls
     public static async Task<string> AdvanceSave(FileTool fileTool, ICitizenCache citizenCache, UserCache userCache, CompanyCache companyCache, RelationshipCache relationshipCache)
     {
         DateTime currentDateTime = DateTime.Now;
-        TimeSpan timeSpan = currentDateTime - userCache.LastSave;
-        double interval = timeSpan.TotalSeconds;
-        foreach (User user in userCache.Users.Values)
-        {
-            user.GainTimePoints(interval);
-        }
-        userCache.LastSave = currentDateTime;
         await fileTool.StoreCitizens((CitizenCache)citizenCache);
         await fileTool.StoreCompanies(companyCache);
         await fileTool.StoreRelationshipCache(relationshipCache);
@@ -55,13 +48,15 @@ public class APICalls
     //}
     public static string StandardInfo(string userName, UserCache userCache, CompanyCache companyCache)
     {
-        string standardInfo = userCache.Users[userName].Describe();
-        standardInfo += companyCache.PlayerCompanies[userCache.Users[userName].CompanyId].Describe();
-        return standardInfo;
+        //string standardInfo = userCache.Users[userName].Describe();
+        //standardInfo += companyCache.PlayerCompanies[userCache.Users[userName].CompanyId].Describe();
+        //return standardInfo;
+        return String.Empty;
     }
-    public static string SpendTp(string userName, double timePoints, UserCache userCache, CompanyCache companyCache)
+    public static string SpendTp(string userName, int timePoints, UserCache userCache, CompanyCache companyCache)
     {
-        bool spent = userCache.Users[userName].SpendTimePoints(timePoints);
+        Guid user = userCache.Users[userName].id;
+        bool spent = companyCache.PlayerCompanies[user].TimeBlock.SpendTimePoints(timePoints);
         if (spent) return "You have spent your timepoint, I award you nothing.";
         else return "You did not have enough timepoints to spend, the more you tighten your grip the more star systems will slip through your fingers.";
     }

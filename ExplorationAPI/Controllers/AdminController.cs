@@ -73,10 +73,7 @@ namespace ExplorationAPI.Controllers
         public async Task<string> Save()
         {
             long interval = 10000;
-            foreach (PlayerCompany company in _companyCache.PlayerCompanies.Values)
-            {
-                company.TimeBlock.GainTimePoints(interval);
-            }
+            _companyCache.Time += interval;
             await _fileTool.StoreCitizens((CitizenCache)_citizenCache);
             await _fileTool.StoreCompanies((CompanyCache)_companyCache);
             await _fileTool.StoreRelationshipCache((RelationshipCache)_relationshipCache);

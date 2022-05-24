@@ -10,19 +10,23 @@ namespace People
     public class Modifier
     {
         #region Constructors
-        public Modifier(string name, string description, int value, bool temporary = false, int duration = 0)
+        public Modifier(string name, string description, int value, bool temporary = false, int duration = -1)
         {
             Name = name;
             Description = description;
             Value = value;
             Temporary = temporary;
-            Duration = duration;
-            Expiration = 0;
+            if (temporary)
+            {
+                Duration = duration;
+            }
+            Expiration = new();
+
         }
 
 
         [JsonConstructor]
-        public Modifier(string name, string description, int expiration, int value, bool temporary = false, int duration = 0)
+        public Modifier(string name, string description, DateTime expiration, int value, bool temporary, int duration)
         {
             Name = name;
             Description = description;
@@ -38,7 +42,7 @@ namespace People
         public int Value { get; internal set; }
         public bool Temporary { get; internal set; }
         public int Duration { get; internal set; }
-        public int Expiration { get; set; }
+        public DateTime Expiration { get; set; }
     }
     public class StatModifier : Modifier
     {
@@ -46,8 +50,8 @@ namespace People
         {
             ModifiedStat = modifiedStat;
         }
-        public StatModifier(string name, string description, int value, int expiration, bool temporary, int duration, Stat modifiedStat)
-            : base(name, description, value, temporary, duration)
+        public StatModifier(string name, string description, DateTime expiration, int value, bool temporary, int duration, Stat modifiedStat)
+            : base(name, description, expiration, value, temporary, duration)
         {
             ModifiedStat = modifiedStat;
         }
