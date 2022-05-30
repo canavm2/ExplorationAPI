@@ -18,7 +18,7 @@ namespace Company
         {
             Random random = new Random();   
             List<Citizen> list = new List<Citizen>();
-            foreach (Citizen citizen in this.Advisors.Values)
+            foreach (Citizen citizen in this.Advisors)
             {
                 list.Add(citizen);
             }

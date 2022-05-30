@@ -8,7 +8,7 @@
         public static List<Citizen> FindAdvisorsSkill(PlayerCompany company, int number, Skill skill, int value)
         {
             List<Citizen> returnAdvisors = new List<Citizen>();
-            foreach (Citizen advisor in company.Advisors.Values)
+            foreach (Citizen advisor in company.Advisors)
             {
                 if (advisor.Skills.ContainsKey(skill))
                 {

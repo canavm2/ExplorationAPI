@@ -58,4 +58,19 @@ namespace People
 
         public Stat ModifiedStat { get; internal set; }
     }
+
+    public class SkillModifier : Modifier
+    {
+        public SkillModifier(string name, string description, int value, bool temporary, int duration, Skill modifiedSkill) : base(name, description, value, temporary, duration)
+        {
+            ModifiedSkill = modifiedSkill;
+        }
+        public SkillModifier(string name, string description, DateTime expiration, int value, bool temporary, int duration, Skill modifiedSkill)
+            : base(name, description, expiration, value, temporary, duration)
+        {
+            ModifiedSkill = modifiedSkill;
+        }
+
+        public Skill ModifiedSkill { get; internal set; }
+    }
 }

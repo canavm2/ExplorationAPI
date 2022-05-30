@@ -70,17 +70,17 @@ namespace FileTools
             else userCache = await fileTool.ReadUsers(loadTool.UserCacheId);
             return userCache;
         }
-        public static async Task<RelationshipCache> ConstructRelationshipCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
-        {
-            RelationshipCache relationshipCache;
-            if (newData)
-            {
-                relationshipCache = new RelationshipCache();
-                loadTool.RelationshipCacheId = relationshipCache.id;
-            }
-            else relationshipCache = await fileTool.ReadRelationshipCache(loadTool.RelationshipCacheId);
-            return relationshipCache;
-        }
+        //public static async Task<RelationshipCache> ConstructRelationshipCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
+        //{
+        //    RelationshipCache relationshipCache;
+        //    if (newData)
+        //    {
+        //        relationshipCache = new RelationshipCache();
+        //        loadTool.RelationshipCacheId = relationshipCache.id;
+        //    }
+        //    else relationshipCache = await fileTool.ReadRelationshipCache(loadTool.RelationshipCacheId);
+        //    return relationshipCache;
+        //}
     }
 
 
@@ -97,7 +97,7 @@ namespace FileTools
         public Task<CitizenCache> ReadCitizens(Guid id);
         public Task StoreCompanies(CompanyCache playerCompany);
         public Task<CompanyCache> ReadCompanies(Guid id);
-        public Task StoreRelationshipCache(RelationshipCache relationships);
+        //public Task StoreRelationshipCache(RelationshipCache relationships);
         public Task<RelationshipCache> ReadRelationshipCache(Guid id);
         public Task StoreLoadTool(LoadTool loadTool);
         public Task<LoadTool> ReadLoadTool(Guid id);
@@ -301,6 +301,7 @@ namespace FileTools
             id = Id;
             CitizenCacheId = citizenCacheId;
             RelationshipCacheId = relationshipCacheId;
+            // TODO get rid of relationshipcaheid?
             CompanyCacheId = companyCacheId;
             UserCacheId = userCacheId;
         }

@@ -1,6 +1,6 @@
 global using Company;
 global using People;
-global using Relation;
+//global using Relation;
 global using Users;
 global using FileTools;
 global using Events;
@@ -28,14 +28,14 @@ LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
 CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
 CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool);
 UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
-RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
+//RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
 var keyVaultEndpoint = new Uri("https://explorationkv.vault.azure.net/");
 await fileTool.StoreLoadTool(loadTool);
 if (NewData)
 {
     await fileTool.StoreCitizens((CitizenCache)citizenCache);
     await fileTool.StoreCompanies(companyCache);
-    await fileTool.StoreRelationshipCache(relationshipCache);
+    //await fileTool.StoreRelationshipCache(relationshipCache);
     await fileTool.StoreUsers(userCache);
 }
 #endregion
@@ -48,7 +48,7 @@ builder.Services.AddControllers();
 builder.Services.AddControllers();
 //Next Three lines pull from DependencyInjection.cs
 builder.Services.RegisterAuth();
-builder.Services.RegisterRepos(citizenCache,companyCache,userCache,relationshipCache,fileTool);
+builder.Services.RegisterRepos(citizenCache,companyCache,userCache,fileTool);
 builder.Services.RegisterLogging();
 
 builder.Services.AddEndpointsApiExplorer();

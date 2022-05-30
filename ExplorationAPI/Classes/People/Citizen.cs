@@ -28,15 +28,12 @@ namespace People
             else
                 Gender = "non-binary";
             id = Guid.NewGuid();
-            Skills = new();
-            Modifiers = new();
-            Traits = new();
 
             #region ConstructStats
             ListTool listTool = new ListTool();
             PrimaryStats = new();
             DerivedStats = new();
-            Modifiers = new();
+            AdvisorBlock = new();
 
             foreach (Stat pstat in Enum.GetValues(typeof(Stat)))
                 {
@@ -87,6 +84,10 @@ namespace People
             //TODO Actually Construct Traits
             Traits = new();
             #endregion
+
+            #region Constructrelationships
+            Relationships = new();
+            #endregion
         }
 
         [JsonConstructor]
@@ -98,8 +99,9 @@ namespace People
             Dictionary<Skill, SkillBlock> skills,
             Dictionary<Stat, StatBlock> primarystats,
             Dictionary<DerivedStat, DerivedStatBlock> derivedstats,
-            Dictionary<string, Modifier> modifiers,
             Dictionary<Attribute, AttributeBlock> attributes,
+            Dictionary<Relationship, RelationshipBlock> relationships,
+            AdvisorBlock advisorBlock,
             Dictionary<string, Trait> traits
             )
         {
@@ -111,8 +113,9 @@ namespace People
             Skills = skills;
             PrimaryStats = primarystats;
             DerivedStats = derivedstats;
-            Modifiers = modifiers;
             Attributes = attributes;
+            Relationships = relationships;
+            AdvisorBlock = advisorBlock;
             Traits = traits;
         }
         #endregion
@@ -128,7 +131,8 @@ namespace People
         internal Dictionary<Stat, StatBlock> PrimaryStats { get; set; }
         internal Dictionary<DerivedStat, DerivedStatBlock> DerivedStats { get; set; }
         public Dictionary<Attribute, AttributeBlock> Attributes { get; set; }
-        public Dictionary<string,Modifier> Modifiers { get; set; }
+        internal Dictionary<Relationship, RelationshipBlock> Relationships { get; set; }
+        public AdvisorBlock AdvisorBlock { get; set; }
         public Dictionary<string,Trait> Traits { get; set; }
         #endregion
     }

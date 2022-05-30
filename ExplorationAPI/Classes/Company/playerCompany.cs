@@ -18,14 +18,12 @@ namespace Company
         #region Constructor
         internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache, long time)
         {
-            Relationships = new();
             if (advisors.Count != 7)
                 throw new ArgumentException($"There are {advisors.Count} advisors in the list, there must be 7.");
             Name = name;
             id = Guid.NewGuid();
             UserId = user.id;
-            Advisors = new();
-            Recruits = new();
+            Members = new();
             EventStatus = new();
             TimeBlock = new();
             AddAdvisor(master, "master");
@@ -41,14 +39,7 @@ namespace Company
                 string benchNumber = "bench" + (i-4).ToString();
                 AddAdvisor(advisors[i], benchNumber);
             }
-
-            //Create an initial pool of Recruits
-            Recruits = new();
-            for (int i = 0; i < 4; i++)
-            {
-                Citizen recruit = citizenCache.GetRandomCitizen();
-                Recruits.Add("recruit" + (i+1).ToString(), recruit);
-            }
+                        
             Skills = new();
             foreach (Skill skill in Enum.GetValues(typeof(Skill))) { Skills.Add(skill, new(0)); }
             UpdateCompanySkills();
@@ -58,21 +49,17 @@ namespace Company
         public PlayerCompany(
             string name,
             Guid Id,
-            Dictionary<string,Citizen> advisors,
-            Dictionary<string,Relationship> relationships,
+            Dictionary<string, Citizen> members,
             Dictionary<Skill, CompanySkillBlock> skills,
             Guid userId,
-            Dictionary<string, Citizen> recruits,
             EventStatus eventStatus,
             TimeBlock timeBlock)
         {
             Name = name;
             id = Id;
-            Advisors = advisors;
-            Relationships = relationships;
+            Members = members;
             Skills = skills;
-            UserId = UserId;
-            Recruits= recruits;
+            UserId = userId;
             EventStatus = eventStatus;
             TimeBlock = timeBlock;
         }
@@ -84,10 +71,63 @@ namespace Company
         public string Name { get; set; }
         public Guid id { get; set; }
         public Guid UserId { get; set; }
-        public Dictionary<string, Citizen> Advisors { get; set; }
-        public Dictionary<string, Relationship> Relationships { get; set; }
+
+        private Dictionary<string, Citizen> _members;
+        public Dictionary<string, Citizen> Members { get { return _members; } internal set { _members = value; } }
+        public List<Citizen> Advisors
+        {
+            get
+            {
+                List<Citizen> _advisors = new();
+                foreach (var member in _members.Values)
+                {
+                    if (member.AdvisorBlock.Advisor) _advisors.Add(member);
+                }
+                return _advisors;
+            }
+        }
+        public List<Citizen> Vanguard
+        {
+            get
+            {
+                List<Citizen> _vanguard = new();
+                foreach (var member in _members.Values)
+                {
+                    if (member.AdvisorBlock.Vanguard) _vanguard.Add(member);
+                }
+                return _vanguard;
+            }
+        }
+        public List<Citizen> Bench
+        {
+            get
+            {
+                List<Citizen> _bench = new();
+                foreach (var member in _members.Values)
+                {
+                    if (!member.AdvisorBlock.Advisor & !member.AdvisorBlock.Vanguard) _bench.Add(member);
+                }
+                return _bench;
+            }
+        }
+        public Citizen Master
+        {
+            get
+            {
+                // TODO fix the possibility of returning no master. and unnecessary creation of citizen master.
+                Citizen _master = new("must fix", "male");
+                foreach (var citizen in _members.Values)
+                {
+                    if (citizen.AdvisorBlock.Master)
+                    {
+                        _master = citizen;
+                    }
+                }
+                return _master;
+            }
+        }
+
         public Dictionary<Skill, CompanySkillBlock> Skills { get; set; }
-        public Dictionary<string, Citizen> Recruits { get; set; }
         public EventStatus EventStatus { get; set; }
         public TimeBlock TimeBlock { get; set; }
         #endregion

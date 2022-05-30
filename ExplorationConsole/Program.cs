@@ -21,7 +21,6 @@ if (FromCloud)
     CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
     CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool);
     UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
-    RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
 
     // TEST from Cloud
     User user = userCache.Users["string"];
@@ -29,8 +28,8 @@ if (FromCloud)
 
     company.EventStatus = new();
 
-    company.Advisors["master"].SetSkillDev(Skill.Carpentry, 21);
-    company.Advisors["advisor1"].SetSkillDev(Skill.Tinker, 31);
+    company.Master.SetSkillDev(Skill.Carpentry, 21);
+    company.Advisors[0].SetSkillDev(Skill.Tinker, 31);
     company.EventStatus.NextStage = Event.BrokenCartOne;
 
     string returnString = ExplorationAPIMethods.Walk(user, company);  //EventOperators.RunStage(company);

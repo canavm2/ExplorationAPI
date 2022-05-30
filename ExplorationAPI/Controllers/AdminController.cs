@@ -16,7 +16,7 @@ namespace ExplorationAPI.Controllers
         private ICompanyCache _companyCache;
         private IUserCache _userCache;
         private IFileTool _fileTool;
-        private IRelationshipCache _relationshipCache;
+        //private IRelationshipCache _relationshipCache;
         private readonly IUserService _userService;
         private readonly ILoginService _loginService;
 
@@ -27,8 +27,8 @@ namespace ExplorationAPI.Controllers
             IUserCache userCache,
             IFileTool fileTool,
             IUserService userService,
-            ILoginService loginService,
-            IRelationshipCache relationshipCache)
+            ILoginService loginService
+            )
         {
             _logger = logger;
             _citizenCache = citizenCache;
@@ -37,7 +37,6 @@ namespace ExplorationAPI.Controllers
             _fileTool = fileTool;
             _userService = userService;
             _loginService = loginService;
-            _relationshipCache = relationshipCache;
         }
         #endregion
 
@@ -76,7 +75,6 @@ namespace ExplorationAPI.Controllers
             _companyCache.Time += interval;
             await _fileTool.StoreCitizens((CitizenCache)_citizenCache);
             await _fileTool.StoreCompanies((CompanyCache)_companyCache);
-            await _fileTool.StoreRelationshipCache((RelationshipCache)_relationshipCache);
             await _fileTool.StoreUsers((UserCache)_userCache);
             return "Everything saved!  Beep Beep Woop Woop";
         }
