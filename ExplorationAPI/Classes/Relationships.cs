@@ -73,8 +73,8 @@ namespace Relation
             Teamwork = random.Next(-10, 20);
             Connection = 0;
             //Creates an ID with the citizen's IDs as: XXXX-YYYY, where XXXX is smaller than YYYY
-            int compare = citizen1.id.CompareTo(citizen2.id);
-            id = CreateRelationshipId(citizen1.id.ToString(), citizen2.id.ToString(), compare);
+            int compare = citizen1.Id.CompareTo(citizen2.Id);
+            id = CreateRelationshipId(citizen1.Id.ToString(), citizen2.Id.ToString(), compare);
             if (compare < 0)
             {
                 Citizen1Name = citizen1.Name;

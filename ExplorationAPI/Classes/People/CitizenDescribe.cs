@@ -17,7 +17,7 @@ namespace People
                 DescribeStats(full) +
                 $"\nTheir skills are:\n\n" +
                 DescribeSkills(full) +
-                $"\nThis citizen's ID: {id}\n\n";
+                $"\nThis citizen's ID: {Id}\n\n";
 
             return returnDescription;
         }
@@ -30,17 +30,17 @@ namespace People
             {
                 if (stat.Value.Known || full)
                 {
-                    primaryDesc += $"{stat.Key}: {stat.Value.Full}";
+                    primaryDesc += $"{stat.Key}: {this.GetStat(stat.Key)}";
                     // Adds information for devs
-                    if (stat.Value.RacialModifier != 0 & full) primaryDesc += $", {this.Race.Name}: {stat.Value.RacialModifier}";
+                    if (stat.Value._racialModifier != 0 & full) primaryDesc += $", {this.Race.Name}: {stat.Value._racialModifier}";
                         primaryDesc += "\n";
                 }
                 else primaryDesc += $"{stat.Key}: ?? \n";
             }
             string derivedDesc = "";
-            foreach (KeyValuePair<DerivedStat, DerivedStatBlock> stat in DerivedStats)
+            foreach (DerivedStat dstat in Enum.GetValues(typeof(DerivedStat)))
             {
-                derivedDesc += $"{stat.Key}: {stat.Value.Full}\n";
+                derivedDesc += $"{dstat}: {this.GetDerivedStat(dstat)}\n";
             }
             string description =
                 $"Primary Stats:\n" +
@@ -56,8 +56,8 @@ namespace People
             string primaryDesc = "";
             foreach (var skill in Skills)
             {
-                if (skill.Value.Known || full) primaryDesc += $"{skill.Key}({skill.Value.pStat},{skill.Value.sStat}): {skill.Value.Full}\n";
-                if (full) primaryDesc += $"     Unmod: {skill.Value.Unmod}, Max: {skill.Value.Max}\n";
+                if (skill.Value.Known || full) primaryDesc += $"{skill.Key}({skill.Value.pStat},{skill.Value.sStat}): {this.GetSkill(skill.Key)}\n";
+                if (full) primaryDesc += $"     Unmod: {skill.Value._unmod}, Max: {skill.Value._max}\n";
             }
             return primaryDesc;
         }

@@ -26,7 +26,7 @@ namespace People
     {
         #region Constructors
         //Creates a cache with full lists of every citizen sex
-        public CitizenCache(int size = 0)
+        public CitizenCache(int size)
         {
             Name = "Testing";
             id = Guid.NewGuid();
@@ -48,7 +48,7 @@ namespace People
         [JsonConstructor]
         public CitizenCache(Guid Id, string name, List<Citizen> femalecitizens, List<Citizen> malecitizens, List<Citizen> nbcitizens)
         {
-            id=Id;
+            id = Id;
             Name=name;
             FemaleCitizens = femalecitizens;
             MaleCitizens = malecitizens;

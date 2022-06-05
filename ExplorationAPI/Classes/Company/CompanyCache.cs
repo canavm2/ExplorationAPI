@@ -14,7 +14,6 @@ namespace Company
         public Guid id { get; set; }
         public Dictionary<Guid, PlayerCompany> PlayerCompanies { get; set; }
         public Guid CreateNewCompany(ICitizenCache citizenCache, User user);
-        public long Time { get; set; }
     }
     public class CompanyCache : ICompanyCache
     {
@@ -23,22 +22,19 @@ namespace Company
         {
             id = Guid.NewGuid();
             PlayerCompanies = new();
-            Time = 0;
         }
 
         [JsonConstructor]
-        public CompanyCache(Guid ID, Dictionary<Guid, PlayerCompany> playerCompanies, long time)
+        public CompanyCache(Guid Id, Dictionary<Guid, PlayerCompany> playerCompanies)
         {
-            id=ID;
+            id = Id;
             PlayerCompanies = playerCompanies;
-            Time = time;
         }
         #endregion
 
         #region Dictionaries and Properties
         public Guid id { get; set; }
         public Dictionary<Guid, PlayerCompany> PlayerCompanies { get; set; }
-        public long Time { get; set; }
         #endregion
 
         #region Methods
@@ -48,7 +44,7 @@ namespace Company
             for (int i = 0; i < 7; i++)
                 advisors.Add(citizenCache.GetRandomCitizen());
             Citizen master = citizenCache.GetRandomCitizen();
-            PlayerCompany newCompany = new(user.UserName, master, advisors, user, citizenCache, Time);
+            PlayerCompany newCompany = new(user.UserName, master, advisors, user, citizenCache);
             this.PlayerCompanies[newCompany.id] = newCompany;
             return newCompany.id;
         }

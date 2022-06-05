@@ -16,7 +16,6 @@ namespace ExplorationAPI.Controllers
         private ICompanyCache _companyCache;
         private IUserCache _userCache;
         private IFileTool _fileTool;
-        //private IRelationshipCache _relationshipCache;
         private readonly IUserService _userService;
         private readonly ILoginService _loginService;
 
@@ -50,7 +49,7 @@ namespace ExplorationAPI.Controllers
             userDto.UserName = request.UserName;
             userDto.Password = request.Password;
             if (_userCache.CheckforUser(request.UserName)) return BadRequest("username exists");
-            userDto = _loginService.CreatePasswordHash(userDto, out byte[] hash, out byte[] salt);
+            _loginService.CreatePasswordHash(userDto, out byte[] hash, out byte[] salt);
             _userCache.CreateNewUser(request.UserName, hash, salt, (CitizenCache)_citizenCache, (CompanyCache)_companyCache);
             _userCache.Users[request.UserName].Admin = true;
             return Ok("Admin Created");
@@ -71,8 +70,6 @@ namespace ExplorationAPI.Controllers
         [HttpGet("save", Name = "Advance & Save")]
         public async Task<string> Save()
         {
-            long interval = 10000;
-            _companyCache.Time += interval;
             await _fileTool.StoreCitizens((CitizenCache)_citizenCache);
             await _fileTool.StoreCompanies((CompanyCache)_companyCache);
             await _fileTool.StoreUsers((UserCache)_userCache);

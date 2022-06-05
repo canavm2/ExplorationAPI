@@ -64,7 +64,7 @@ namespace Company
             List<int> skillvalues = new();
             foreach (Citizen citizen in Advisors)
             {
-                skillvalues.Add(citizen.Skills[skill].Full);
+                skillvalues.Add(citizen.GetSkill(skill));
             }
             skillvalues.Sort();
             skillvalues.Reverse();
@@ -72,7 +72,7 @@ namespace Company
         }
 
         //Add an advisor to an EMPTY role, rarely used, except initial construction and vacant roles
-        internal void AddAdvisor(Citizen citizen, string role)
+        internal void AddMember(Citizen citizen, string role)
         {
             //TODO verify the role is acceptible
             _members[role] = citizen;

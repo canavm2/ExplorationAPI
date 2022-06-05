@@ -43,72 +43,40 @@ namespace People
     }
     public class SkillBlock
     {
+        #region Constructors
         public SkillBlock(int unmod, Stat pstat, Stat sstat)
         {
-            Unmod = unmod;
+            _unmod = unmod;
             pStat = pstat;
             sStat = sstat;
             Known = false;
             Random random = new Random();
-            Max = random.Next(400, 600);
+            _max = random.Next(400, 600);
             _modifiers = new();
-            if (Full > 200) Known = true;
         }
 
         [JsonConstructor]
-        public SkillBlock(int unmod, Stat pstat, Stat sstat, bool known, int max, Dictionary<string, SkillModifier> modifiers)
+        public SkillBlock(int _Unmod, Stat pstat, Stat sstat, bool known, int _Max, Dictionary<string, SkillModifier> _Modifiers)
         {
-            Unmod = unmod;
             pStat = pstat;
             sStat = sstat;
             Known = known;
-            Max = max;
-            _modifiers = modifiers;
+            _unmod = _Unmod;
+            _max = _Max;
+            _modifiers = _Modifiers;
         }
+        #endregion
 
-        public int Full {
-            get {return _unmod + _totalModifiedValue; }
-        }
-
-        private int _unmod;
-        public int Unmod{
-            get { return _unmod; }
-            internal set { _unmod = value; }
-        }
-
-        private int _totalModifiedValue
-        {
-            get
-            {
-                if (_modifiers.Count > 0)
-                {  // Only checks if there are any Modifiers, else returns 0.
-                    int value = 0;
-                    List<string> expired = new();
-
-                    // Checks each modifier to see if its expired, if not expired it adds it up; if expired, deletes it.
-                    foreach (SkillModifier modifier in _modifiers.Values)
-                    {
-                        if (modifier.Expiration > DateTime.UtcNow) expired.Add(modifier.Name);
-                        else value += modifier.Value;
-                    }
-                    foreach (String name in expired) RemoveModifier(name);
-                    return value;
-                }
-                else return 0;
-            }
-        }
-
-        private int _max;
-        public int Max {
-            get { return _max; }
-            internal set { _max = value; }
-        }
-
-        public Stat pStat { get; }
-        public Stat sStat { get; }
+        #region Dictionaries and Properties
+        public Stat pStat { get; set; }
+        public Stat sStat { get; set; }
         public bool Known { get; set; }
 
-        private Dictionary<string, SkillModifier> _modifiers { get; set; }
+        public int _unmod { get; set; }
+
+        public int _max { get; set; }
+        public Dictionary<string, SkillModifier> _modifiers { get; set;  }
+        #endregion
 
         public void ApplyModifier(SkillModifier modifier, PlayerCompany company)
         {

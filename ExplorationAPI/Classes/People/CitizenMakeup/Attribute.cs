@@ -14,21 +14,18 @@ namespace People
         #region Constructors
         public AttributeBlock()
         {
-            Unmod = 100;
-            Max = 300;
+            _unmod = 100;
+            _max = 300;
         }
 
         [JsonConstructor]
-        public AttributeBlock(int unmod, int max)
+        public AttributeBlock(int _Unmod, int _Max)
         {
-            Unmod = unmod;
-            Max = max;
+            _unmod = _Unmod;
+            _max = _Max;
         }
         #endregion
-        public int Full { get { return _unmod; } }
-        private int _unmod;
-        public int Unmod { get { return _unmod; } internal set { _unmod = value; } }
-        private int _max;
-        public int Max { get { return _max; } internal set { _max = value; } }
+        public int _unmod { get; set; }
+        public int _max { get; set; }
     }
 }

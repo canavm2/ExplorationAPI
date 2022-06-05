@@ -19,7 +19,7 @@
             if (advisors.Count > 0) foreach (Citizen advisor in advisors)
                 {
                     option = new EventOption();
-                    option.AdvisorId = advisor.id;
+                    option.AdvisorId = advisor.Id;
                     option.AdvisorName = advisor.Name;
                     option.Text = advisor.Name + " thinks they can fix it.  I let them.";
                     option.Type = "fix";
@@ -30,7 +30,7 @@
             if (advisors.Count > 0) foreach (Citizen advisor in advisors)
                 {
                     option = new EventOption();
-                    option.AdvisorId = advisor.id;
+                    option.AdvisorId = advisor.Id;
                     option.AdvisorName = advisor.Name;
                     option.Text = advisor.Name + " thinks they can not only fix it, but make it better.  I let them.";
                     option.Type = "tinker";

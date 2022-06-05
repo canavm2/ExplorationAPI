@@ -23,7 +23,7 @@
             foreach (Citizen citizen in citizens)
             {
                 option = new EventOption();
-                option.AdvisorId = citizen.id;
+                option.AdvisorId = citizen.Id;
                 option.AdvisorName = citizen.Name;
                 option.Text = citizen.Name + " wants to eat the berries.  I'll let them.";
                 status.Options.Add(option);

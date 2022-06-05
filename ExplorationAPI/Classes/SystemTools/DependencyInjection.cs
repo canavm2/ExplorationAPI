@@ -14,13 +14,11 @@ namespace DependencyInjection
             CitizenCache citizenCache,
             CompanyCache companyCache,
             UserCache userCache,
-            //RelationshipCache relationshipCache,
             FileTool fileTool)
         {
             collection.AddSingleton<ICitizenCache>(citizenCache);
             collection.AddSingleton<ICompanyCache>(companyCache);
             collection.AddSingleton<IUserCache>(userCache);
-            //collection.AddSingleton<IRelationshipCache>(relationshipCache);
             collection.AddSingleton<IFileTool>(fileTool);
             //Add other repositories
         }

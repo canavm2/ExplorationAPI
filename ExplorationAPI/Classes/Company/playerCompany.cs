@@ -16,7 +16,7 @@ namespace Company
     {
         //Initialy building a company
         #region Constructor
-        internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache, long time)
+        internal PlayerCompany(string name, Citizen master, List<Citizen> advisors, User user, ICitizenCache citizenCache)
         {
             if (advisors.Count != 7)
                 throw new ArgumentException($"There are {advisors.Count} advisors in the list, there must be 7.");
@@ -26,18 +26,21 @@ namespace Company
             Members = new();
             EventStatus = new();
             TimeBlock = new();
-            AddAdvisor(master, "master");
+            master.AdvisorBlock.Master = true;
+            master.AdvisorBlock.Advisor = true;
+            AddMember(master, "master");
             //Sets the first 5 citizens in advisors to the other advisors
             for (int i = 0; i < 5; i++)
             {
                 string advisorNumber = "advisor" + (i+1).ToString();
-                AddAdvisor(advisors[i], advisorNumber);
+                advisors[i].AdvisorBlock.Advisor = true;
+                AddMember(advisors[i], advisorNumber);
             }
             //Sets the last 2 advisors to bench positions
             for (int i = 5; i < 7; i++)
             {
                 string benchNumber = "bench" + (i-4).ToString();
-                AddAdvisor(advisors[i], benchNumber);
+                AddMember(advisors[i], benchNumber);
             }
                         
             Skills = new();

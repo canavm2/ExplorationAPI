@@ -131,6 +131,12 @@ namespace FileTools
         #endregion
 
         #region Methods
+        public async Task StoreTest(CitizenCache citizens)
+        {
+            containerId = "testCache";
+            container = cosmosClient.GetDatabase(databaseId).GetContainer(containerId);
+            ItemResponse<CitizenCache> response = await container.UpsertItemAsync<CitizenCache>(citizens);
+        }
         public async Task StoreCitizens(CitizenCache citizens)
         {
             containerId = "CitizenCache";
@@ -197,49 +203,31 @@ namespace FileTools
             return (UserCache)response;
         }
 
-        //public void StoreModifierList(ModifierList modifierlist, string filename)
-        //{
-        //    filename += ".txt";
-        //    string jsonmodifierlist = JsonSerializer.Serialize(modifierlist, options);
-        //    string filepath = Path.Combine(TxtFilePath, filename);
-        //    File.WriteAllText(filepath, jsonmodifierlist);
-        //}
-        //public ModifierList ReadModifierList(string filename)
-        //{
-        //    filename += ".txt";
-        //    string filepath = Path.Combine(TxtFilePath, filename);
-        //    string fileJson = File.ReadAllText(filepath);
-        //    ModifierList modifierlist = JsonSerializer.Deserialize<ModifierList>(fileJson);
-        //    return modifierlist;
-        //}
-        //public void StoreTraitList(TraitList traitlist, string filename)
-        //{
-        //    filename += ".txt";
-        //    string jsontraitlist = JsonSerializer.Serialize(traitlist, options);
-        //    string filepath = Path.Combine(TxtFilePath, filename);
-        //    File.WriteAllText(filepath, jsontraitlist);
-        //}
-        //public TraitList ReadTraitList(string filename)
-        //{
-        //    filename += ".txt";
-        //    string filepath = Path.Combine(TxtFilePath, filename);
-        //    string fileJson = File.ReadAllText(filepath);
-        //    TraitList traitlist = JsonSerializer.Deserialize<TraitList>(fileJson);
-        //    return traitlist;
-        //}
-        //public void StoreModifier(Modifier modifier)
-        //{
-        //    string filepath = Path.Combine(TxtFilePath, "modifier.txt");
-        //    string jsoncitizen = JsonSerializer.Serialize(modifier, options);
-        //    File.WriteAllText(filepath, jsoncitizen);
-        //}
-        //public Modifier ReadModifier()
-        //{
-        //    string filepath = Path.Combine(TxtFilePath, "modifier.txt");
-        //    string fileJson = File.ReadAllText(filepath);
-        //    Modifier modifier = JsonSerializer.Deserialize<Modifier>(fileJson);
-        //    return modifier;
-        //}
+        public async Task<bool> ResetContainers()
+        {
+            Dictionary<string, string> containers = new ();
+            containers.Add("CitizenCache", "/id");
+            containers.Add("CompanyCache", "/id");
+            containers.Add("UserCache", "/id");
+
+            foreach (var c in containers)
+            {
+                try
+                {
+                    var container = cosmosClient.GetDatabase(databaseId).GetContainer(c.Key);
+
+                    await container.DeleteContainerAsync();
+                }
+                catch
+                {
+                }
+
+
+                await cosmosClient.GetDatabase(databaseId).CreateContainerIfNotExistsAsync(c.Key, c.Value);
+            }
+            return true;
+        }
+
         #endregion
     }
     //An object that can be isntatiated to hold the lists of skills, stats, and attributes

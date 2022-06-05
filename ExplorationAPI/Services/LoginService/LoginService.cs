@@ -11,13 +11,13 @@ namespace ExplorationAPI.Services.LoginService
     //This is all used in the Login controllers (loging and admin)
     public interface ILoginService
     {
-        public UserDto CreatePasswordHash(UserDto userDto, out byte[] hash, out byte[] salt);
+        public void CreatePasswordHash(UserDto userDto, out byte[] hash, out byte[] salt);
         public bool VerifyPassword(string username, string password, byte[] hash, byte[] salt, IUserCache userCache);
         public string CreateToken(User user, IFileTool fileTool, Boolean admin = false);
     }
     public class LoginService : ILoginService
     {
-        public UserDto CreatePasswordHash(UserDto userDto, out byte[] hash, out byte[] salt)
+        public void CreatePasswordHash(UserDto userDto, out byte[] hash, out byte[] salt)
         {
             using (var hmac = new HMACSHA512())
             {
@@ -25,7 +25,6 @@ namespace ExplorationAPI.Services.LoginService
                 hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(userDto.Password));
                 userDto.Password = string.Empty;
             }
-            return userDto;
         }
         public bool VerifyPassword(string username, string password, byte[] hash, byte[] salt, IUserCache userCache)
         {

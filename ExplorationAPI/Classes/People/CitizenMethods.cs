@@ -10,14 +10,6 @@ namespace People
     {
         #region Methods
 
-        //Updates Citizen's Derived stats based on their PrimaryStats
-        public void RefreshDerived()
-        {
-            DerivedStats[DerivedStat.PHYS].Full = (PrimaryStats[Stat.STR].Full + PrimaryStats[Stat.AGI].Full + PrimaryStats[Stat.CON].Full) / 3;
-            DerivedStats[DerivedStat.MNTL].Full = (PrimaryStats[Stat.INT].Full + PrimaryStats[Stat.WIS].Full + PrimaryStats[Stat.PER].Full) / 3;
-            DerivedStats[DerivedStat.SOCL].Full = (PrimaryStats[Stat.CHA].Full + PrimaryStats[Stat.LDR].Full + PrimaryStats[Stat.WIL].Full) / 3;
-        }
-
         //Adds a temporary modifier to Modifiers(unless already exists) and then applies the modifier
         //Should not be used with trait modifiers, which are stored in the trait
         //public void AddModifier(Modifier modifier)

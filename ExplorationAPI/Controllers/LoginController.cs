@@ -44,7 +44,7 @@ namespace ExplorationAPI.Controllers
         public async Task<ActionResult<User>> Register(UserDto request)
         {
             if (_userCache.CheckforUser(request.UserName)) return BadRequest("username exists");
-            userDto = _loginService.CreatePasswordHash(request, out byte[] hash, out byte[] salt);
+            _loginService.CreatePasswordHash(request, out byte[] hash, out byte[] salt);
             _userCache.CreateNewUser(request.UserName, hash, salt, (CitizenCache)_citizenCache, (CompanyCache)_companyCache);
             return Ok("User Created");
         }
@@ -58,6 +58,15 @@ namespace ExplorationAPI.Controllers
             if (!_loginService.VerifyPassword(request.UserName, request.Password, userPass, userSalt, _userCache)) return BadRequest("wrong password");
             string token = _loginService.CreateToken(_userCache.Users[request.UserName], _fileTool);
             return Ok(token);
+        }
+
+        [HttpGet("save")]
+        public async Task<string> Save()
+        {
+            await _fileTool.StoreCitizens((CitizenCache)_citizenCache);
+            await _fileTool.StoreCompanies((CompanyCache)_companyCache);
+            await _fileTool.StoreUsers((UserCache)_userCache);
+            return "Everything saved!  Beep Beep Woop Woop";
         }
     }
 }

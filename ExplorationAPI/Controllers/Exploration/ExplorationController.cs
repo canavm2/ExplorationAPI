@@ -1,8 +1,4 @@
-using People;
-using Company;
-using Users;
-using Relation;
-using FileTools;
+
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Security.Claims;
@@ -23,7 +19,6 @@ namespace ExplorationAPI.Controllers
         private ICitizenCache _citizenCache;
         private ICompanyCache _companyCache;
         private IUserCache _userCache;
-        private IRelationshipCache _relationshipCache;
         private IFileTool _fileTool;
         private readonly IUserService _userService;
         private readonly ILoginService _loginService;
@@ -33,7 +28,6 @@ namespace ExplorationAPI.Controllers
             ICitizenCache citizenCache,
             ICompanyCache companyCache,
             IUserCache userCache,
-            IRelationshipCache relationshipCache,
             IFileTool fileTool,
             IUserService userService,
             ILoginService loginService)
@@ -42,7 +36,6 @@ namespace ExplorationAPI.Controllers
             _citizenCache = citizenCache;
             _companyCache = companyCache;
             _userCache = userCache;
-            _relationshipCache = relationshipCache;
             _fileTool = fileTool;
             _userService = userService;
             _loginService = loginService;

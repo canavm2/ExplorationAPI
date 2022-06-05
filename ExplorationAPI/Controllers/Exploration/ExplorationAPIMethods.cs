@@ -4,7 +4,7 @@
     {
         public static string Walk(User user, PlayerCompany company)
         {
-            if (!company.TimeBlock.SpendTimePoints(100)) return "You do not have enough Timepoints, you have " + company.TimeBlock.TimePoints.ToString() + " timepoints.";
+            if (!company.TimeBlock.SpendTimePoints(100)) return "You do not have enough Timepoints, you have NEEDS TO BE FIXED timepoints.";
             if (company.EventStatus.InEvent) return "You are currently in an event, please resolve the current event.\n\n" +
                 company.EventStatus.ResultDescription;
             Random random = new Random();

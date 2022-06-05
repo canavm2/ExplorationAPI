@@ -27,12 +27,11 @@ namespace People
                 Gender = gender;
             else
                 Gender = "non-binary";
-            id = Guid.NewGuid();
+            Id = Guid.NewGuid();
 
             #region ConstructStats
             ListTool listTool = new ListTool();
             PrimaryStats = new();
-            DerivedStats = new();
             AdvisorBlock = new();
 
             foreach (Stat pstat in Enum.GetValues(typeof(Stat)))
@@ -41,11 +40,6 @@ namespace People
                 if (Race.StatModifiers.ContainsKey(pstat)) racialModifier = Race.StatModifiers[pstat];
                 PrimaryStats[pstat] = new(random.Next(50, 200), racialModifier);
             }
-            foreach (DerivedStat dstat in Enum.GetValues(typeof(DerivedStat)))
-            {
-                DerivedStats[dstat] = new(0);
-            }
-            RefreshDerived();
             // Gives the company 1 known bit of information.
             PrimaryStats.ElementAt(random.Next(PrimaryStats.Count)).Value.Known = true;
             #endregion
@@ -65,12 +59,14 @@ namespace People
                 {
                     if (startSkills > 0) chance = highskill / startSkills; else chance = 0;
                     if (random.NextDouble() < (chance))
-                    { 
+                    {
                         highskill--;
-                        Skills[skill] = new(random.Next(200,300), listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
-                    } else Skills[skill] = new(random.Next(100, 175), listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
+                        Skills[skill] = new(random.Next(200, 300), listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
+                    }
+                    else Skills[skill] = new(random.Next(100, 175), listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
                     startSkills--;
-                } else Skills[skill] = new(0, listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
+                }
+                else Skills[skill] = new(0, listTool.SkillsList[skill][0], listTool.SkillsList[skill][1]);
                 nSkills--;
             }
             #endregion
@@ -95,24 +91,22 @@ namespace People
             string name,
             string gender,
             Race race,
-            Guid Id, int age,
+            Guid id, int age,
             Dictionary<Skill, SkillBlock> skills,
             Dictionary<Stat, StatBlock> primarystats,
-            Dictionary<DerivedStat, DerivedStatBlock> derivedstats,
             Dictionary<Attribute, AttributeBlock> attributes,
             Dictionary<Relationship, RelationshipBlock> relationships,
             AdvisorBlock advisorBlock,
             Dictionary<string, Trait> traits
             )
         {
+            Id = id;
             Name = name;
+            Age = age;
             Gender = gender;
             Race = race;
-            id = Id;
-            Age = age;
             Skills = skills;
             PrimaryStats = primarystats;
-            DerivedStats = derivedstats;
             Attributes = attributes;
             Relationships = relationships;
             AdvisorBlock = advisorBlock;
@@ -122,16 +116,15 @@ namespace People
 
         #region Dictionaries and Properties
 
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
-        internal Dictionary<Skill, SkillBlock> Skills { get; set; }
         public Race Race { get; set; }
-        internal Dictionary<Stat, StatBlock> PrimaryStats { get; set; }
-        internal Dictionary<DerivedStat, DerivedStatBlock> DerivedStats { get; set; }
+        public Dictionary<Skill, SkillBlock> Skills { get; set; }
+        public Dictionary<Stat, StatBlock> PrimaryStats { get; set; }
         public Dictionary<Attribute, AttributeBlock> Attributes { get; set; }
-        internal Dictionary<Relationship, RelationshipBlock> Relationships { get; set; }
+        public Dictionary<Relationship, RelationshipBlock> Relationships { get; set; }
         public AdvisorBlock AdvisorBlock { get; set; }
         public Dictionary<string,Trait> Traits { get; set; }
         #endregion

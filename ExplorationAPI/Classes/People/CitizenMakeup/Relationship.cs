@@ -23,7 +23,7 @@ namespace People
         {
             OtherAdvisor = otheradvisor;
             Known = known;
-            Value = value;
+            _value = value;
         }
         #endregion
 

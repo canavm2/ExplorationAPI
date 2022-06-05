@@ -12,7 +12,7 @@
             {
                 if (advisor.Skills.ContainsKey(skill))
                 {
-                    if (advisor.Skills[skill].Full > value)
+                    if (advisor.GetSkill(skill) > value)
                     {
                         returnAdvisors.Add(advisor);
                     }

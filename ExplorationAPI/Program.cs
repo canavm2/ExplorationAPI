@@ -16,26 +16,34 @@ using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 
 Boolean NewData = false;
+Boolean NewLoad = false;
 
-//FileTool fileTool = await StartupTools.ConstructFileTool();
-//LoadTool loadTool = new();
-//await fileTool.StoreLoadTool(loadTool);
+FileTool fileTool;
+LoadTool loadTool;
+
+if (NewLoad){
+    fileTool = await StartupTools.ConstructFileTool();
+    loadTool = new();
+    await fileTool.StoreLoadTool(loadTool);
+}
+else
+{
+    Guid LoadToolGuid = new Guid("6462196d-7001-4304-8655-4f47c09630d6");
+    fileTool = await StartupTools.ConstructFileTool();
+    loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
+}
 
 #region DataSetup
-Guid LoadToolGuid = new Guid("80aee562-e9af-4758-929b-d29bb2dad135");
-FileTool fileTool = await StartupTools.ConstructFileTool();
-LoadTool loadTool = await fileTool.ReadLoadTool(LoadToolGuid);
 CitizenCache citizenCache = await StartupTools.ConstructCitizenCache(NewData, loadTool, fileTool);
 CompanyCache companyCache = await StartupTools.ConstructCompanyCache(NewData, loadTool, fileTool);
 UserCache userCache = await StartupTools.ConstructUserCache(NewData, loadTool, fileTool);
-//RelationshipCache relationshipCache = await StartupTools.ConstructRelationshipCache(NewData, loadTool, fileTool);
 var keyVaultEndpoint = new Uri("https://explorationkv.vault.azure.net/");
 await fileTool.StoreLoadTool(loadTool);
 if (NewData)
 {
-    await fileTool.StoreCitizens((CitizenCache)citizenCache);
+    await fileTool.ResetContainers();
     await fileTool.StoreCompanies(companyCache);
-    //await fileTool.StoreRelationshipCache(relationshipCache);
+    await fileTool.StoreCitizens(citizenCache);
     await fileTool.StoreUsers(userCache);
 }
 #endregion
