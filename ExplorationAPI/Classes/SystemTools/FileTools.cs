@@ -70,17 +70,6 @@ namespace FileTools
             else userCache = await fileTool.ReadUsers(loadTool.UserCacheId);
             return userCache;
         }
-        //public static async Task<RelationshipCache> ConstructRelationshipCache(Boolean newData, LoadTool loadTool, FileTool fileTool)
-        //{
-        //    RelationshipCache relationshipCache;
-        //    if (newData)
-        //    {
-        //        relationshipCache = new RelationshipCache();
-        //        loadTool.RelationshipCacheId = relationshipCache.id;
-        //    }
-        //    else relationshipCache = await fileTool.ReadRelationshipCache(loadTool.RelationshipCacheId);
-        //    return relationshipCache;
-        //}
     }
 
 
@@ -252,7 +241,7 @@ namespace FileTools
             {Skill.Law, new List<Stat>{ Stat.INT, Stat.WIS } },
             {Skill.Leadership, new List<Stat>{ Stat.LDR, Stat.WIS } },
             {Skill.Leatherworking, new List<Stat>{ Stat.WIS, Stat.AGI } },
-            {Skill.Martial, new List<Stat>{ Stat.INT, Stat.AGI } },
+            {Skill.Martial, new List<Stat>{ Stat.STR, Stat.INT } },
             {Skill.Medical, new List<Stat>{ Stat.INT, Stat.AGI } },
             {Skill.Metalworking, new List<Stat>{ Stat.STR, Stat.INT } },
             {Skill.Pathfinding, new List<Stat>{ Stat.WIS, Stat.INT } },
@@ -267,13 +256,6 @@ namespace FileTools
             {Skill.Tactics, new List<Stat>{ Stat.INT, Stat.WIS } },
             {Skill.Tinker, new List<Stat>{ Stat.INT, Stat.WIS } }
         };
-
-        public List<string> Attributes = new List<string>() {
-                "Health",
-                "Happiness",
-                "Motivation",
-                "Psyche"
-            };
     }
     public class LoadTool
     {

@@ -73,4 +73,19 @@ namespace People
 
         public Skill ModifiedSkill { get; internal set; }
     }
+    public class AttributeModifier : Modifier
+    {
+        public AttributeModifier(string name, string description, int value, bool temporary, int duration, Attribute modifiedAttribute) : base(name, description, value, temporary, duration)
+        {
+            ModifiedAttribute = modifiedAttribute;
+        }
+        public AttributeModifier(string name, string description, DateTime expiration, int value, bool temporary, int duration, Attribute modifiedAttribute)
+            : base(name, description, expiration, value, temporary, duration)
+        {
+            ModifiedAttribute = modifiedAttribute;
+        }
+
+        public Attribute ModifiedAttribute { get; internal set; }
+    }
+
 }

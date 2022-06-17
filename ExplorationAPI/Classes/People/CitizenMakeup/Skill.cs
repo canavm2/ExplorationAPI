@@ -81,7 +81,7 @@ namespace People
         public void ApplyModifier(SkillModifier modifier, PlayerCompany company)
         {
             // Sets temporary modifiers expiration based on the companies current time and the duration of the modifier.
-            if (modifier.Temporary) modifier.Expiration = DateTime.UtcNow.Add(TimeSpan.FromSeconds(modifier.Duration));
+            if (modifier.Temporary) modifier.Expiration = company.TimeBlock.CurrentTime.Add(TimeSpan.FromSeconds(modifier.Duration));
 
             // Checks to see if the modifier is in the Modifiers list already.
             if (_modifiers.ContainsKey(modifier.Name))
